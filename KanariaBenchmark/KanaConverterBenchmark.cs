@@ -14,6 +14,26 @@ namespace KanariaBenchmark
     public class KanaConverterBenchmark
     {
         [Test]
+        public void Wagahai_Katakana_Test()
+        {
+            Bench(Resources.WAGAHAI, 10, new[]
+            {
+                new Pair<string, Func<string, string>>("StrConv", targetText =>
+                {
+                    return Strings.StrConv(targetText, VbStrConv.Katakana, 0x411);
+                }),
+                new Pair<string, Func<string, string>>("kanaxs", targetText =>
+                {
+                    return Kana.ToKatakana(targetText);
+                }),
+                new Pair<string, Func<string, string>>("Kanaria", targetText =>
+                {
+                    return KanaConverter.ToKatakana(targetText);
+                }),
+            });
+        }
+        
+        [Test]
         public void Wagahai_HiraganaKatakana_Test()
         {
             Bench(Resources.WAGAHAI, 10, new[]
