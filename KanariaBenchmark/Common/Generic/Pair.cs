@@ -1,4 +1,4 @@
-﻿namespace Kanaria.Common.Generic
+﻿namespace KanariaBenchmark.Common.Generic
 {
     /// <summary>
     /// 対になるデータを表します。

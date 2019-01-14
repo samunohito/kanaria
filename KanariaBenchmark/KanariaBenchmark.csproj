@@ -4,12 +4,12 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{3D450A28-ED46-4126-8EE1-2DDDEC00CD65}</ProjectGuid>
+    <ProjectGuid>{92CB2936-AAE5-4480-B77A-9F109B72ADAD}</ProjectGuid>
     <ProjectTypeGuids>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>KanariaTest</RootNamespace>
-    <AssemblyName>KanariaTest</AssemblyName>
+    <RootNamespace>KanariaBenchmark</RootNamespace>
+    <AssemblyName>KanariaBenchmark</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -33,6 +33,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Kanaria, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\TestProject1\bin\Debug\Kanaria.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
@@ -42,16 +46,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ForTest\UpperLowerPair.cs" />
-    <Compile Include="ForTest\Const.cs" />
-    <Compile Include="ForTest\HiraganaKatakanaPair.cs" />
-    <Compile Include="ForTest\NarrowWidePair.cs" />
-    <Compile Include="KanaConverterTestHiraganaKatakana.cs" />
-    <Compile Include="KanaConverterTestNarrowWide.cs" />
-    <Compile Include="KanaConverterTestUpperLower.cs" />
+    <Compile Include="Common\Generic\Pair.cs" />
+    <Compile Include="External\Kanaxs.cs" />
+    <Compile Include="KanaConverterBenchmark.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\KanariaExample\KanariaExample.csproj">
+      <Project>{aa9b47a8-0f06-4630-b579-90c9cdfa0ac5}</Project>
+      <Name>KanariaExample</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Kanaria\Kanaria.csproj">
       <Project>{4b051e77-a31e-4f6e-bb92-0d0b8aa3538f}</Project>
       <Name>Kanaria</Name>

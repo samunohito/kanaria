@@ -68,5 +68,14 @@ namespace KanariaExample.Properties {
                 return ResourceManager.GetString("WAGAHAI", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string TRUMP {
+            get {
+                return ResourceManager.GetString("TRUMP", resourceCulture);
+            }
+        }
     }
 }
