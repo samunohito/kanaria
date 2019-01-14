@@ -11,7 +11,7 @@ namespace Kanaria.KanaConverter
         /// <returns>変換後文字列</returns>
         public static string ToHiragana(string target)
         {
-            return InternalKanaUtil.KanaTypeReplace(target, KanaType.Hiragana);
+            return InternalKanaUtil.ToHiragana(target);
         }
 
         /// <summary>
@@ -21,7 +21,7 @@ namespace Kanaria.KanaConverter
         /// <returns>変換後文字列</returns>
         public static string ToKatakana(string target)
         {
-            return InternalKanaUtil.KanaTypeReplace(target, KanaType.Katakana);
+            return InternalKanaUtil.ToKatakana(target);
         }
 
         /// <summary>
@@ -30,24 +30,19 @@ namespace Kanaria.KanaConverter
         /// <param name="target">対象文字列</param>
         /// <param name="requestKanaType">変換対象のかな種別。省略時はカタカナ、英数、記号すべて対象。</param>
         /// <returns>変換後文字列</returns>
-        public static string ToNarrow(string target,
-            KanaType requestKanaType = (KanaType.Katakana | KanaType.Eisuu | KanaType.Kigou))
+        public static string ToNarrow(string target)
         {
-            return InternalKanaUtil.WidthTypeReplace(target, requestKanaType, WidthType.Narrow);
+            return InternalKanaUtil.ToNarrow(target);
         }
 
         /// <summary>
         /// 引数に与えられた文字列に含まれる半角文字を全て全角文字へ変換します。
         /// </summary>
         /// <param name="target">対象文字列</param>
-        /// <param name="requestKanaType">変換対象のかな種別。省略時はカタカナ、英数、記号すべて対象。</param>
-        /// <param name="requestBackSlashType">半角円マーク（バックスラッシュ）の変換先設定。省略時は全角バックスラッシュ。</param>
-        /// <returns></returns>
-        public static string ToWide(string target,
-            KanaType requestKanaType = (KanaType.Katakana | KanaType.Eisuu | KanaType.Kigou),
-            BackSlashType requestBackSlashType = BackSlashType.BackSlash)
+        /// <returns>変換後文字列</returns>
+        public static string ToWide(string target)
         {
-            return InternalKanaUtil.WidthTypeReplace(target, requestKanaType, WidthType.Wide, requestBackSlashType);
+            return InternalKanaUtil.ToWide(target);
         }
 
         /// <summary>
@@ -57,7 +52,7 @@ namespace Kanaria.KanaConverter
         /// <returns>変換後文字列</returns>
         public static string ToUpperCase(string target)
         {
-            return InternalKanaUtil.LetterTypeReplace(target, LetterType.Upper);
+            return InternalKanaUtil.ToUpperCase(target);
         }
 
         /// <summary>
@@ -67,7 +62,7 @@ namespace Kanaria.KanaConverter
         /// <returns>変換後文字列</returns>
         public static string ToLowerCase(string target)
         {
-            return InternalKanaUtil.LetterTypeReplace(target, LetterType.Lower);
+            return InternalKanaUtil.ToLowerCase(target);
         }
     }
 }

@@ -1,8 +1,8 @@
-namespace TestProject1.ForTest
+namespace KanariaTest.ForTest
 {
     public class NarrowWidePair
     {
-        public string Hankaku { get; set; }
-        public string Zenkaku { get; set; }
+        public string Narrow { get; set; }
+        public string Wide { get; set; }
     }
 }
