@@ -32,11 +32,8 @@ let expect = "吾輩ﾊ😺猫ﾃﾞｱﾙ😺";
 assert_eq!(expect.to_string(), UCSStr::from_str(source).katakana().narrow().to_string());
 ```
 
-また、上記のようにメソッドチェーンを使用して連続して変換設定ができませんが、<br>
+また、上記のようにメソッドチェーンによる連続した変換設定はできませんが、<br>
 次のような形でも変換できます。<br>
-この例は、半角文字を全角文字に変換しています。<br>
-この形式での変換は生ポインタ（\*mut u16など)への書き込みを行うことができます。<br>
-連続での変換はせず、なおかつ速度を求める場合はこちらのほうが便利です。<br>
 ```rust
 use kanaria::converter::{Converter, ConverterFactory};
 let target = vec!['あ', 'い', 'う', 'え', 'お'];
@@ -50,8 +47,12 @@ unsafe {
 };
 assert_eq!(result, vec!['ア', 'イ', 'ウ', 'エ', 'オ']);
 ```
-
-ちなみに、.NET向けのラッパーライブラリも別途ご用意しています。
+この例は、半角文字を全角文字に変換しています。<br>
+この形式での変換は生ポインタ（\*mut u16など)への書き込みを行うことができます。<br>
+連続での変換はせず、なおかつ速度を求める場合はこちらのほうが便利です。<br>
+<br>
+ちなみに、他言語向けのラッパーライブラリも別途ご用意しています。<br>
+以下はC#の例です（VB.NETからも同じ要領で使用できるはずです）。
 ```C#
 var katakana = "吾輩ハ😺猫デアル😺";
 var hiragana = "吾輩は😺猫である😺";
@@ -63,10 +64,11 @@ Assert.AreEqual(hiragana, UcsString.From(katakana).Hiragana().ToString());
 ※準備中
 
 ## API
-次のページをご参照ください。<br>
-これはRustのものになりますが、C#などのラッパーライブラリでも同じような動作をするため、<br>
-参考になると思います。<br>
-https://sam-osamu.github.io/kanaria/docs/kanaria/index.html
+次のページをご参照ください（これはRust向けのものです）。<br>
+https://sam-osamu.github.io/kanaria/docs/kanaria/index.html <br>
+<br>
+RustDocのようにサンプルを交えての記載まではできていませんが、<br>
+各言語のラッパー関数にも同様の関数コメントをご用意しています。<br>
 
 ## Licence
 [MIT](https://github.com/tcnksm/tool/blob/master/LICENCE)
