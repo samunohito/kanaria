@@ -1,0 +1,13 @@
+[package]
+name = "kanaria"
+version = "0.1.0"
+authors = ["osamu <46447427+sam-osamu@users.noreply.github.com>"]
+edition = "2018"
+
+[dependencies]
+
+
+[lib]
+name = "kanaria"
+path = "src/lib.rs"
+
