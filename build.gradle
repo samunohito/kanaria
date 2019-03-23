@@ -31,3 +31,21 @@ project(':extern_dotnet') {
     }
 }
 
+// ---------------------------------------------------------------------------------------------------------------
+
+def DOC_PATH = file("${rootDir}/docs")
+def DOC_GEN_PATH = file("${rootDir}/core/target/doc/kanaria")
+
+task syncRustDoc(type: Sync) {
+    from DOC_GEN_PATH.absolutePath
+    into DOC_PATH.absolutePath
+}
+
+task generateRustDoc(type: Exec) {
+    workingDir = file("${rootDir}/core")
+    commandLine = ["cargo", "doc"]
+}
+
+task deployRustDoc {}
+deployRustDoc.dependsOn(generateRustDoc)
+deployRustDoc.dependsOn(syncRustDoc)
