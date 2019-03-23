@@ -34,7 +34,7 @@ project(':extern_dotnet') {
 // ---------------------------------------------------------------------------------------------------------------
 
 def DOC_PATH = file("${rootDir}/docs")
-def DOC_GEN_PATH = file("${rootDir}/core/target/doc/kanaria")
+def DOC_GEN_PATH = file("${rootDir}/core/target/doc")
 
 task syncRustDoc(type: Sync) {
     from DOC_GEN_PATH.absolutePath
