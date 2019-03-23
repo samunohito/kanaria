@@ -35,3 +35,11 @@ fn example_sentence_4() {
     assert_eq!(UCSStr::from_str(zenkaku).narrow().to_string(), hankaku.to_string());
     assert_eq!(UCSStr::from_str(hankaku).wide().to_string(), zenkaku.to_string());
 }
+
+#[test]
+fn example_sentence_5() {
+    let source = "吾輩は😺猫である😺";
+    let expect = "吾輩ﾊ😺猫ﾃﾞｱﾙ😺";
+
+    assert_eq!(expect.to_string(), UCSStr::from_str(source).katakana().narrow().to_string());
+}

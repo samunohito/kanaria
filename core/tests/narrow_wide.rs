@@ -1,4 +1,4 @@
-use kanaria::{UCSChar, UCSStr};
+use kanaria::UCSChar;
 use kanaria::utils::WidthUtils;
 
 #[test]

@@ -1,6 +1,6 @@
 use std::slice::from_raw_parts;
 
-use crate::converter::{Converter, ConverterFactory};
+use crate::converter::{Converter, ConverterFactory, ConverterUtils};
 use crate::str::ConvertType::{Hiragana, Katakana, LowerCase, Narrow, None, UpperCase, Wide};
 use crate::UCSChar;
 
@@ -25,7 +25,7 @@ pub struct UCSStr<T> where T: UCSChar {
     /// 変換対象文字列を保持します。
     target: Vec<T>,
     /// 変換先の種別を保持します。
-    convet_type: ConvertType,
+    convet_types: Vec<ConvertType>,
 }
 
 impl UCSStr<u16> {
@@ -41,7 +41,7 @@ impl UCSStr<u16> {
     pub fn from_str<U>(s: &U) -> Self where U: AsRef<str> + ?Sized {
         Self {
             target: s.as_ref().encode_utf16().map(|scalar| { u16::from_scalar(scalar) }).collect::<Vec<u16>>(),
-            convet_type: None,
+            convet_types: vec![],
         }
     }
 }
@@ -60,7 +60,7 @@ impl<'a, T> UCSStr<T> where T: UCSChar {
     pub fn from_slice(source: &'a [T]) -> Self {
         Self {
             target: source.to_vec(),
-            convet_type: None,
+            convet_types: vec![],
         }
     }
 
@@ -92,8 +92,8 @@ impl<'a, T> UCSStr<T> where T: UCSChar {
     ///
     /// assert_eq!(result, vec!['A', 'B', 'C']);
     /// ```
-    pub fn upper_case(&mut self) -> &Self {
-        self.convet_type = UpperCase;
+    pub fn upper_case(&mut self) -> &mut Self {
+        self.convet_types.push(UpperCase);
         return self;
     }
 
@@ -111,8 +111,8 @@ impl<'a, T> UCSStr<T> where T: UCSChar {
     ///
     /// assert_eq!(result, vec!['a', 'b', 'c']);
     /// ```
-    pub fn lower_case(&mut self) -> &Self {
-        self.convet_type = LowerCase;
+    pub fn lower_case(&mut self) -> &mut Self {
+        self.convet_types.push(LowerCase);
         return self;
     }
 
@@ -130,8 +130,8 @@ impl<'a, T> UCSStr<T> where T: UCSChar {
     ///
     /// assert_eq!(result, vec!['あ', 'い', 'う', 'え', 'お']);
     /// ```
-    pub fn hiragana(&mut self) -> &Self {
-        self.convet_type = Hiragana;
+    pub fn hiragana(&mut self) -> &mut Self {
+        self.convet_types.push(Hiragana);
         return self;
     }
 
@@ -149,8 +149,8 @@ impl<'a, T> UCSStr<T> where T: UCSChar {
     ///
     /// assert_eq!(result, vec!['ア', 'イ', 'ウ', 'エ', 'オ']);
     /// ```
-    pub fn katakana(&mut self) -> &Self {
-        self.convet_type = Katakana;
+    pub fn katakana(&mut self) -> &mut Self {
+        self.convet_types.push(Katakana);
         return self;
     }
 
@@ -169,8 +169,8 @@ impl<'a, T> UCSStr<T> where T: UCSChar {
     /// assert_eq!(result.len(), 4);
     /// assert_eq!(result, vec!['フ','ジ','サ','ン']);
     /// ```
-    pub fn wide(&mut self) -> &Self {
-        self.convet_type = Wide;
+    pub fn wide(&mut self) -> &mut Self {
+        self.convet_types.push(Wide);
         return self;
     }
 
@@ -189,8 +189,35 @@ impl<'a, T> UCSStr<T> where T: UCSChar {
     /// assert_eq!(result.len(), 10);
     /// assert_eq!(result, vec!['ｶ','ﾞ','ｷ','ﾞ','ｸ','ﾞ','ｹ','ﾞ','ｺ','ﾞ'])
     /// ```
-    pub fn narrow(&mut self) -> &Self {
-        self.convet_type = Narrow;
+    pub fn narrow(&mut self) -> &mut Self {
+        self.convet_types.push(Narrow);
+        return self;
+    }
+
+    /// 文字列を変換せず、そのままとするように設定します。
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use kanaria::UCSStr;
+    ///
+    /// let target = vec!['あ', 'い', 'う', 'え', 'お'];
+    /// let result1 = UCSStr::from_slice(target.as_slice())
+    ///     .none()
+    ///     .to_vec();
+    ///
+    /// assert_eq!(result1, vec!['あ', 'い', 'う', 'え', 'お']);
+    ///
+    /// // カタカナに変換後、何もしない設定なのでカタカナに変換された文字が出てくる
+    /// let result2 = UCSStr::from_slice(target.as_slice())
+    ///     .katakana()
+    ///     .none()
+    ///     .to_vec();
+    ///
+    /// assert_eq!(result2, vec!['ア', 'イ', 'ウ', 'エ', 'オ']);
+    /// ```
+    pub fn none(&mut self) -> &mut Self {
+        self.convet_types.push(None);
         return self;
     }
 
@@ -209,17 +236,9 @@ impl<'a, T> UCSStr<T> where T: UCSChar {
     /// assert_eq!(result.as_str(), "アイウエオ")
     /// ```
     pub fn to_string(&self) -> String {
-        let raw = ConverterFactory::<T>::from_slice(self.target.as_slice());
-        match self.convet_type {
-            UpperCase => raw.upper_case().to_string(),
-            LowerCase => raw.lower_case().to_string(),
-            Hiragana => raw.hiragana().to_string(),
-            Katakana => raw.katakana().to_string(),
-            Wide => raw.wide().to_string(),
-            Narrow => raw.narrow().to_string(),
-            _ => raw.none().to_string(),
-        }
+        ConverterUtils::build_string(self.to_vec())
     }
+
     /// 文字列を変換し、Vecとして返却します。
     ///
     /// # Examples
@@ -235,15 +254,21 @@ impl<'a, T> UCSStr<T> where T: UCSChar {
     /// assert_eq!(result, vec!['ア', 'イ', 'ウ', 'エ', 'オ'])
     /// ```
     pub fn to_vec(&self) -> Vec<T> {
-        let raw = ConverterFactory::<T>::from_slice(self.target.as_slice());
-        match self.convet_type {
-            UpperCase => raw.upper_case().to_vec(),
-            LowerCase => raw.lower_case().to_vec(),
-            Hiragana => raw.hiragana().to_vec(),
-            Katakana => raw.katakana().to_vec(),
-            Wide => raw.wide().to_vec(),
-            Narrow => raw.narrow().to_vec(),
-            _ => raw.none().to_vec(),
-        }
+        let mut buffer = self.target.clone();
+
+        self.convet_types.iter().for_each(|convert_type| {
+            let factory = ConverterFactory::<T>::from_slice(buffer.as_slice());
+            buffer = match convert_type {
+                UpperCase => factory.upper_case().to_vec(),
+                LowerCase => factory.lower_case().to_vec(),
+                Hiragana => factory.hiragana().to_vec(),
+                Katakana => factory.katakana().to_vec(),
+                Wide => factory.wide().to_vec(),
+                Narrow => factory.narrow().to_vec(),
+                None => factory.none().to_vec(),
+            }
+        });
+
+        return buffer;
     }
 }
