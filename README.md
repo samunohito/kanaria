@@ -39,20 +39,10 @@ assert_eq!(expect.to_string(), UCSStr::from_str(source).katakana().narrow().to_s
 連続での変換はせず、なおかつ速度を求める場合はこちらのほうが便利です。<br>
 ```rust
 use kanaria::converter::{Converter, ConverterFactory};
-let target = vec!['ﾌ', 'ｼ', 'ﾞ', 'ｻ', 'ﾝ'];
-let result = ConverterFactory::from_slice(target.as_slice())
-    .wide()
-    .to_vec();
-assert_eq!(result.len(), 4);
-assert_eq!(result, vec!['フ','ジ','サ','ン']);
-```
-
-※生ポインタへの書き込みサンプル
-```rust
-use kanaria::converter::{Converter, ConverterFactory};
 let target = vec!['あ', 'い', 'う', 'え', 'お'];
 let mut result = Vec::<char>::with_capacity(target.len());
 unsafe {
+    // ほかにも、UCSStrと同じようにVec<T>やStringに出力する機能もあります
     let len = ConverterFactory::from_slice(target.as_slice())
         .katakana()
         .write_to_ptr(result.as_mut_ptr());
