@@ -1,0 +1,5 @@
+rootProject.name = 'kanaria'
+
+include 'core'
+include 'extern_c'
+include 'extern_dotnet'

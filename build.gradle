@@ -1,0 +1,33 @@
+plugins {
+    id "org.ysb33r.rust.base" version "0.2"
+    id 'org.ysb33r.rust.lib'  version '0.2'
+    id 'com.ullink.msbuild' version '3.1'
+    id 'com.ullink.nunit' version '1.12'
+}
+
+subprojects {
+    repositories {
+        mavenCentral()
+    }
+}
+
+project(':core') {
+    rust {
+        useCargoSourceLayout(projectDir.name)
+        cargoToml "${projectDir}/Cargo.toml"
+    }
+}
+
+project(':extern_c') {
+    rust {
+        useCargoSourceLayout(projectDir.name)
+        cargoToml "${projectDir}/Cargo.toml"
+    }
+}
+
+project(':extern_dotnet') {
+    msbuild {
+        solutionFile = file("${projectDir}/extern_dotnet.sln")
+    }
+}
+
