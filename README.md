@@ -21,7 +21,7 @@ Kanaria
   - アルファベット
   - 記号
 
-## Demo
+## Demo / Usage
 
 UCSStrに文字列を読み込ませ、変換先の設定を行い（この例だとカタカナに変換後、さらに半角に変換）、<br>
 Stringとして吐き出しているサンプルです。
@@ -69,7 +69,7 @@ Assert.AreEqual(katakana, UcsString.From(hiragana).Katakana().ToString());
 Assert.AreEqual(hiragana, UcsString.From(katakana).Hiragana().ToString());
 ```
 
-## 使用方法
+## Installation
 ※準備中
 
 ## API
