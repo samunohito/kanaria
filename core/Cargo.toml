@@ -2,7 +2,17 @@
 name = "kanaria"
 version = "0.1.0"
 authors = ["osamu <46447427+sam-osamu@users.noreply.github.com>"]
-edition = "2018"
+
+repository = "https://github.com/sam-osamu/kanaria"
+readme = "../README.md"
+description = "This library provides functions such as hiragana, katakana, half-width and full-width mutual conversion and discrimination."
+license = "MIT"
+
+keywords = ["wide", "narrow", "hiragana", "katakana"]
+
+exclude = [
+    "tests/*"
+]
 
 [dependencies]
 
