@@ -68,7 +68,8 @@ impl<T> ConverterFactory<T> where T: UCSChar {
     /// use kanaria::converter::{Converter, ConverterFactory};
     ///
     /// let target = vec!['a', 'b', 'c'];
-    /// let result = ConverterFactory::from_slice(target.as_slice())
+    /// let converter = ConverterFactory::from_slice(target.as_slice());
+    /// let result = converter
     ///     .upper_case()
     ///     .to_vec();
     ///
@@ -86,7 +87,8 @@ impl<T> ConverterFactory<T> where T: UCSChar {
     /// use kanaria::converter::{Converter, ConverterFactory};
     ///
     /// let target = vec!['A', 'B', 'C'];
-    /// let result = ConverterFactory::from_slice(target.as_slice())
+    /// let converter = ConverterFactory::from_slice(target.as_slice());
+    /// let result = converter
     ///     .lower_case()
     ///     .to_vec();
     ///
@@ -104,7 +106,8 @@ impl<T> ConverterFactory<T> where T: UCSChar {
     /// use kanaria::converter::{Converter, ConverterFactory};
     ///
     /// let target = vec!['ア', 'イ', 'ウ', 'エ', 'オ'];
-    /// let result = ConverterFactory::from_slice(target.as_slice())
+    /// let converter = ConverterFactory::from_slice(target.as_slice());
+    /// let result = converter
     ///     .hiragana()
     ///     .to_vec();
     ///
@@ -122,7 +125,8 @@ impl<T> ConverterFactory<T> where T: UCSChar {
     /// use kanaria::converter::{Converter, ConverterFactory};
     ///
     /// let target = vec!['あ', 'い', 'う', 'え', 'お'];
-    /// let result = ConverterFactory::from_slice(target.as_slice())
+    /// let converter = ConverterFactory::from_slice(target.as_slice());
+    /// let result = converter
     ///     .katakana()
     ///     .to_vec();
     ///
@@ -140,7 +144,8 @@ impl<T> ConverterFactory<T> where T: UCSChar {
     /// use kanaria::converter::{Converter, ConverterFactory};
     ///
     /// let target = vec!['ﾌ', 'ｼ', 'ﾞ', 'ｻ', 'ﾝ'];
-    /// let result = ConverterFactory::from_slice(target.as_slice())
+    /// let converter = ConverterFactory::from_slice(target.as_slice());
+    /// let result = converter
     ///     .wide()
     ///     .to_vec();
     ///
@@ -159,7 +164,8 @@ impl<T> ConverterFactory<T> where T: UCSChar {
     /// use kanaria::converter::{Converter, ConverterFactory};
     ///
     /// let target = vec!['ガ', 'ギ', 'グ', 'ゲ', 'ゴ'];
-    /// let result = ConverterFactory::from_slice(target.as_slice())
+    /// let converter = ConverterFactory::from_slice(target.as_slice());
+    /// let result = converter
     ///     .narrow()
     ///     .to_vec();
     ///
@@ -178,7 +184,8 @@ impl<T> ConverterFactory<T> where T: UCSChar {
     /// use kanaria::converter::{Converter, ConverterFactory};
     ///
     /// let target = vec!['あ', 'い', 'う', 'え', 'お'];
-    /// let result = ConverterFactory::from_slice(target.as_slice())
+    /// let converter = ConverterFactory::from_slice(target.as_slice());
+    /// let result = converter
     ///     .none()
     ///     .to_vec();
     ///
