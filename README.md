@@ -65,7 +65,7 @@ Assert.AreEqual(hiragana, UcsString.From(katakana).Hiragana().ToString());
 
 ## API
 次のページをご参照ください（これはRust向けのものです）。<br>
-https://sam-osamu.github.io/kanaria/docs/kanaria/index.html <br>
+https://docs.rs/kanaria/0.1.0/kanaria/ <br>
 <br>
 RustDocのようにサンプルを交えての記載まではできていませんが、<br>
 各言語のラッパー関数にも同様の関数コメントをご用意しています。<br>
