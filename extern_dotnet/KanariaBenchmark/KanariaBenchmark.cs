@@ -5,7 +5,7 @@ using System.Linq;
 using Kanaria;
 using KanariaBenchmark.Common.Generic;
 using KanariaBenchmark.External;
-using KanariaExample.Properties;
+using KanariaBenchmark.Properties;
 using Microsoft.VisualBasic;
 using NUnit.Framework;
 
@@ -16,7 +16,7 @@ namespace KanariaBenchmark
         [Test]
         public void Wagahai_Katakana_Test()
         {
-            Bench(Resources.WAGAHAI, 10, new[]
+            Bench(ExampleText.WAGAHAI, 10, new[]
             {
                 new Pair<string, Func<string, string>>("StrConv", targetText =>
                 {
@@ -36,7 +36,7 @@ namespace KanariaBenchmark
         [Test]
         public void Wagahai_HiraganaKatakana_Hankaku_Test()
         {
-            Bench(Resources.WAGAHAI, 10, new[]
+            Bench(ExampleText.WAGAHAI, 10, new[]
             {
                 new Pair<string, Func<string, string>>("StrConv", targetText =>
                 {
@@ -64,7 +64,7 @@ namespace KanariaBenchmark
         [Test]
         public void Wagahai_HiraganaKatakana_HankakuZenkaku_Test()
         {
-            Bench(Resources.WAGAHAI, 10, new[]
+            Bench(ExampleText.WAGAHAI, 10, new[]
             {
                 new Pair<string, Func<string, string>>("StrConv", targetText =>
                 {
@@ -95,7 +95,7 @@ namespace KanariaBenchmark
         [Test]
         public void Wagahai_Katakana_HankakuZenkaku_Test()
         {
-            Bench(Resources.WAGAHAI, 10, new[]
+            Bench(ExampleText.WAGAHAI, 10, new[]
             {
                 new Pair<string, Func<string, string>>("StrConv", targetText =>
                 {
@@ -123,7 +123,7 @@ namespace KanariaBenchmark
         [Test]
         public void Trump_LowerUpper_Test()
         {
-            Bench(Resources.TRUMP, 10, new[]
+            Bench(ExampleText.TRUMP, 10, new[]
             {
                 new Pair<string, Func<string, string>>("StrConv", targetText =>
                 {
@@ -148,7 +148,7 @@ namespace KanariaBenchmark
         [Test]
         public void Trump_WideNarrow_Test()
         {
-            Bench(Resources.TRUMP, 10, new[]
+            Bench(ExampleText.TRUMP, 10, new[]
             {
                 new Pair<string, Func<string, string>>("StrConv", targetText =>
                 {
