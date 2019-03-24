@@ -69,6 +69,7 @@ Rust（https://crates.io/crates/kanaria）
 kanaria = "0.1.1"
 ```
 <br>
+
 C#（https://www.nuget.org/packages/Kanaria.Net/）
 ```bat
 PM> Install-Package Kanaria.Net -Version 0.1.2
