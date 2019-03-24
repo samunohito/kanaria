@@ -2,7 +2,7 @@
 
 namespace Kanaria.Utils
 {
-    internal static class WidthUtils
+    public static class WidthUtils
     {
         /// <summary>
         /// 全角文字を半角に変換します。
@@ -10,11 +10,13 @@ namespace Kanaria.Utils
         /// 文字列が結合された場合、2つ目の戻り値にtrueが入っています。
         /// </summary>
         /// <param name="target">変換対象文字</param>
+        /// <param name="next">次の文字。濁音・半濁音のように結合可能な文字の場合、targetとこの値を結合する。</param>
         /// <param name="is_pad">結合あり:true / 結合なし:false</param>
         /// <returns>変換後文字</returns>
         [DllImport("kanaria_core.dll", EntryPoint = "convert_to_wide_for_utf16",
             CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
-        private static extern uint ConvertToWide(char target, out bool is_pad);
+        [return:MarshalAs(UnmanagedType.U2)]
+        public static extern char ConvertToWide(char target, char next, out bool is_pad);
 
         /// <summary>
         /// 全角文字を半角に変換します。
@@ -26,6 +28,7 @@ namespace Kanaria.Utils
         /// <returns>変換後文字</returns>
         [DllImport("kanaria_core.dll", EntryPoint = "convert_to_narrow_for_utf16",
             CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
-        private static extern char ConvertToNarrow(char target, out char second);
+        [return:MarshalAs(UnmanagedType.U2)]
+        public static extern char ConvertToNarrow(char target, out char second);
     }
 }

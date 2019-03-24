@@ -1,3 +1,5 @@
+extern crate kanaria;
+
 use kanaria::utils::KanaUtils;
 use kanaria::constants::*;
 
