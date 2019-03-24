@@ -61,7 +61,18 @@ Assert.AreEqual(hiragana, UcsString.From(katakana).Hiragana().ToString());
 ```
 
 ## Installation
-※準備中
+各言語で使用されるパッケージマネージャからインストールできます。
+
+Rust（https://crates.io/crates/kanaria）
+```toml:Cargo.toml
+[dependencies]
+kanaria = "0.1.1"
+```
+<br>
+C#（https://www.nuget.org/packages/Kanaria.Net/）
+```bat
+PM> Install-Package Kanaria.Net -Version 0.1.2
+```
 
 ## API
 次のページをご参照ください（これはRust向けのものです）。<br>
