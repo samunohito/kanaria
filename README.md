@@ -71,4 +71,4 @@ RustDocのようにサンプルを交えての記載まではできていませ�
 各言語のラッパー関数にも同様の関数コメントをご用意しています。<br>
 
 ## Licence
-[MIT](https://github.com/tcnksm/tool/blob/master/LICENCE)
+[MIT](https://opensource.org/licenses/mit-license.php)
