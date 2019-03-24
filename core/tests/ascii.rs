@@ -1,5 +1,7 @@
-use kanaria::constants::*;
+extern crate kanaria;
+
 use kanaria::utils::AsciiUtils;
+use kanaria::constants::*;
 
 #[test]
 pub fn is_narrow_lower_case() {
@@ -53,6 +55,18 @@ pub fn convert_to_lower_case() {
     UPPER_LOWER_LIST.iter().for_each(|item| {
         assert_eq!(AsciiUtils::convert_to_lower_case(item.upper), item.lower)
     })
+}
+
+#[test]
+pub fn example_sentence_1() {
+    assert_eq!(true, AsciiUtils::is_ascii('a'));
+    assert_eq!(true, AsciiUtils::is_wide_ascii('ｗ'));
+    assert_eq!(true, AsciiUtils::is_narrow_ascii('N'));
+    assert_eq!(false, AsciiUtils::is_ascii('あ'));
+    assert_eq!(false, AsciiUtils::is_wide_ascii('漢'));
+    assert_eq!(false, AsciiUtils::is_narrow_ascii('ｱ'));
+
+    assert_eq!(false, AsciiUtils::is_wide_ascii(0x6f22u16));
 }
 
 pub fn check(accept: &[u32], deny: &[u32], func: fn(u32) -> bool) {

@@ -1,3 +1,5 @@
+extern crate kanaria;
+
 use kanaria::UCSStr;
 
 #[test]
