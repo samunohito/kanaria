@@ -9,7 +9,8 @@ pub trait Converter<T> where T: UCSChar {
     /// use kanaria::converter::{Converter, ConverterFactory};
     ///
     /// let target = vec!['あ', 'い', 'う', 'え', 'お'];
-    /// let result = ConverterFactory::from_slice(target.as_slice())
+    /// let converter = ConverterFactory::from_slice(target.as_slice());
+    /// let result = converter
     ///     .katakana()
     ///     .to_string();
     ///
@@ -25,7 +26,8 @@ pub trait Converter<T> where T: UCSChar {
     /// use kanaria::converter::{Converter, ConverterFactory};
     ///
     /// let target = vec!['あ', 'い', 'う', 'え', 'お'];
-    /// let result = ConverterFactory::from_slice(target.as_slice())
+    /// let converter = ConverterFactory::from_slice(target.as_slice());
+    /// let result = converter
     ///     .katakana()
     ///     .to_vec();
     ///
@@ -47,7 +49,8 @@ pub trait Converter<T> where T: UCSChar {
     /// let mut result = Vec::<char>::with_capacity(target.len());
     ///
     /// unsafe {
-    ///     let len = ConverterFactory::from_slice(target.as_slice())
+    /// let converter = ConverterFactory::from_slice(target.as_slice());
+    /// let len = converter
     ///         .katakana()
     ///         .write_to_ptr(result.as_mut_ptr());
     ///     result.set_len(len);
