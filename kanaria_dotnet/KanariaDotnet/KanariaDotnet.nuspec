@@ -8,10 +8,10 @@
       Also, this library is a wrapper for the native library created by Rust.
     </description>
 
-    <version>0.1.0</version>
-    <releaseNotes>Initial release</releaseNotes>
+    <version>0.1.2</version>
+    <releaseNotes>Files needed at build time were accidentally packaged and removed.</releaseNotes>
     
-    <projectUrl>https://github.com/sam-osamu/kanaria</projectUrl>
+    <projectUrl>https://github.com/sam-osamu/com.kanaria</projectUrl>
     <license type="expression">MIT</license>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     

@@ -9,7 +9,6 @@ pub struct KanaUtils;
 
 impl KanaUtils {
     /// 対象がひらがなかどうかを判定します。
-    /// 対象が下記のいずれかに該当するUnicode文字であればtrueになります。
     ///
     /// # Examples
     ///
@@ -30,7 +29,6 @@ impl KanaUtils {
     }
 
     /// 対象がカタカナかどうかを判定します。半角・全角は区別しません。
-    /// 対象が下記のいずれかに該当するUnicode文字であればtrueになります。
     ///
     /// # Examples
     ///
@@ -52,7 +50,6 @@ impl KanaUtils {
     }
 
     /// 対象が半角カタカナかどうかを判定します。
-    /// 対象が下記のいずれかに該当するUnicode文字であればtrueになります。
     ///
     /// # Examples
     ///
@@ -73,7 +70,6 @@ impl KanaUtils {
     }
 
     /// 対象が全角カタカナかどうかを判定します。
-    /// 対象が下記のいずれかに該当するUnicode文字であればtrueになります。
     ///
     /// # Examples
     ///
@@ -94,7 +90,6 @@ impl KanaUtils {
     }
 
     /// 対象が半角記号かどうかを判定します。ASCIIコード内の記号はtrueになりません。
-    /// 対象が下記のいずれかに該当するUnicode文字であればtrueになります。
     ///
     /// # Examples
     ///
@@ -116,7 +111,6 @@ impl KanaUtils {
     }
 
     /// 対象が半角記号かどうかを判定します。ASCIIコード内の記号はtrueになりません。
-    /// 対象が下記のいずれかに該当するUnicode文字であればtrueになります。
     ///
     /// # Examples
     ///

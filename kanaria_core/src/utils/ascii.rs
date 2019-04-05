@@ -79,7 +79,7 @@ impl AsciiUtils {
             AsciiUtils::is_wide_number(target)
     }
 
-    /// 英字の大文字かどうかを判定します。
+    /// 英字の小文字かどうかを判定します。
     /// 半角・全角は区別しません。
     ///
     /// # Examples
@@ -98,7 +98,7 @@ impl AsciiUtils {
         AsciiUtils::is_narrow_lower_case(target) || AsciiUtils::is_wide_lower_case(target)
     }
 
-    /// 半角英字の大文字かどうかを判定します。
+    /// 半角英字の小文字かどうかを判定します。
     ///
     /// # Examples
     ///

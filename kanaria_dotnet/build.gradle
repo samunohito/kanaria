@@ -1,0 +1,6 @@
+apply plugin: 'com.ullink.msbuild'
+apply plugin: 'com.ullink.nunit'
+
+msbuild {
+    solutionFile = file("${projectDir}/extern_dotnet.sln")
+}

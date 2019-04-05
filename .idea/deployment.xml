@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PublishConfigData">
+    <serverData>
+      <paths name="WSL (5b8733b5-0d0f-47db-a51d-4b93a319ecfc)">
+        <serverdata>
+          <mappings>
+            <mapping local="$PROJECT_DIR$/extern_dotnet" web="/" />
+            <mapping local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="WSL(w64) (96c580fe-ebaf-449e-a2a7-29f3f04e8457)">
+        <serverdata>
+          <mappings>
+            <mapping local="$PROJECT_DIR$/extern_dotnet" web="/" />
+            <mapping local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+    </serverData>
+  </component>
+</project>
