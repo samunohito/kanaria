@@ -1,0 +1,71 @@
+apply plugin: 'com.jfrog.bintray'
+apply plugin: 'maven'
+apply plugin: 'maven-publish'
+
+def GITHUB_URL = "https://github.com/sam-osamu/kanaria"
+
+group = 'com.kanaria'
+version = '0.1.0'
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+javadoc {
+    options.locale = 'ja_JP'
+}
+
+artifacts {
+    archives jar
+    archives sourcesJar
+    archives javadocJar
+}
+
+bintray {
+    user = project.hasProperty('bintray_user') ? bintray_user : ''
+    key = project.hasProperty('bintray_apikey') ? bintray_apikey : ''
+
+    pkg {
+        repo = 'maven'
+        name = "${project.group}.${project.name}"
+        licenses = ['MIT']
+        websiteUrl = GITHUB_URL
+        issueTrackerUrl = "${GITHUB_URL}/issues"
+        vcsUrl = "${GITHUB_URL}.git"
+        publicDownloadNumbers = true
+        version {
+            name = project.version
+        }
+    }
+    configurations = ['archives']
+}
+
+install {
+    repositories.mavenInstaller {
+        pom.project {
+            groupId project.group
+            artifactId project.name
+            version project.version
+
+            licenses {
+                license {
+                    name 'The MIT License'
+                    url 'https://opensource.org/licenses/MIT'
+                    distribution 'repo'
+                }
+            }
+
+            scm {
+                connection "${GITHUB_URL}.git"
+                url GITHUB_URL
+            }
+        }
+    }
+}
+

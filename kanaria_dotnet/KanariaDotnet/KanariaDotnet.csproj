@@ -70,12 +70,13 @@
   <ItemGroup>
     <EmbeddedResource Include="costura32\kanaria_core.dll" />
     <EmbeddedResource Include="costura64\kanaria_core.dll" />
-    <Content Include="costura32\.gitkeep" />
-    <Content Include="costura64\.gitkeep" />
-    <Content Include="FodyWeavers.xml" />
+    <None Include="FodyWeavers.xml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="KanariaDotnet.nuspec" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.4.1.0\build\Fody.targets" Condition="Exists('..\packages\Fody.4.1.0\build\Fody.targets')" />

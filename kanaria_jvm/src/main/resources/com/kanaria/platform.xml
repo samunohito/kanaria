@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<platformMapping>
+    <!--
+    This applies when the value of the name-prefix attribute and the string obtained using
+    System#getProperty("os.name") match the prefix.
+    The value of the os.name property is converted to lowercase before being used for comparison.
+    -->
+    <os name-prefix="unix|linux">
+        <!--
+        This applies when the value of the type attribute exactly matches the string obtained using System#getProperty("os.arch").
+        The value of the os.name property is converted to lowercase before being used for comparison.
+        -->
+        <arch type="x86|i686">
+            <!-- x86 Android -->
+            <platform name="i686-linux-android">
+                <!--
+                If the value of java system property "java.vm.specification.vendor" is "The Android Project",
+                it is the setting to use this tool chain preferentially.
+                Android is a kind of Linux, but Rust's platform is different for Linux and Android.
+                The "os.name" and "os.arch" properties do not provide enough information to distinguish between Linux and Android.
+                Therefore, you need to reference additional properties.
+                The next "java-system-properties" element is the setting to get the value from System#getProperty() and compare.
+                This platform is used when both key and value attributes match exactly.
+                Also, if multiple "java-system-properties" elements are configured,
+                this platform will be used when all the conditions are met.
+                -->
+                <java-system-properties key="java.vm.specification.vendor" value="The Android Project"/>
+            </platform>
+            <!-- x86 Linux -->
+            <platform name="i686-unknown-linux-gnu"/>
+        </arch>
+        <arch type="x86_64|amd64">
+            <!-- x86_64 Android -->
+            <platform name="x86_64-linux-android">
+                <java-system-properties key="java.vm.specification.vendor" value="The Android Project"/>
+            </platform>
+            <!-- x86_64 Linux -->
+            <platform name="x86_64-unknown-linux-gnu"/>
+        </arch>
+        <arch type="arm">
+            <!-- RaspberryPi -->
+            <platform name="arm-unknown-linux-gnueabihf"/>
+        </arch>
+        <arch type="armeabi-v7a|armv7|armv7a|armv7l">
+            <!-- armeabi-v7a Android -->
+            <platform name="armv7-linux-androideabi"/>
+        </arch>
+        <arch type="arm64-v8a|aarch64">
+            <!-- arm64-v8a Android -->
+            <platform name="aarch64-linux-android"/>
+        </arch>
+    </os>
+    <os name-prefix="mac">
+        <arch type="x86|i686">
+            <!-- x86 MacOS -->
+            <platform name="i686-apple-darwin"/>
+        </arch>
+        <arch type="x86_64|amd64">
+            <!-- x86 MacOS -->
+            <platform name="x86_64-apple-darwin"/>
+        </arch>
+    </os>
+    <os name-prefix="windows">
+        <arch type="x86|i686">
+            <!-- x86 Windows -->
+            <platform name="i686-pc-windows-gnu"/>
+        </arch>
+        <arch type="x86_64|amd64">
+            <!-- x86 Windows -->
+            <platform name="x86_64-pc-windows-gnu"/>
+        </arch>
+    </os>
+</platformMapping>
