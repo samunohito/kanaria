@@ -1,1 +1,0 @@
-initSidebarItems({"struct":[["ConverterFactory",""],["OneToOneConverter",""],["OneToTwoConverter",""],["TwoToOneConverter",""]],"trait":[["Converter",""]]});
