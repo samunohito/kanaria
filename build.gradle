@@ -1,33 +1,17 @@
 plugins {
-    id "org.ysb33r.rust.base" version "0.2"
     id 'org.ysb33r.rust.lib'  version '0.2'
     id 'com.ullink.msbuild' version '3.1'
     id 'com.ullink.nunit' version '1.12'
+    id 'org.jetbrains.kotlin.jvm' version '1.3.11'
+    id 'org.jetbrains.dokka' version '0.9.18'
+    id "com.jfrog.bintray" version "1.8.4"
+    id 'maven'
 }
 
-subprojects {
+allprojects {
     repositories {
+        jcenter()
         mavenCentral()
-    }
-}
-
-project(':core') {
-    rust {
-        useCargoSourceLayout(projectDir.name)
-        cargoToml "${projectDir}/Cargo.toml"
-    }
-}
-
-project(':extern_c') {
-    rust {
-        useCargoSourceLayout(projectDir.name)
-        cargoToml "${projectDir}/Cargo.toml"
-    }
-}
-
-project(':extern_dotnet') {
-    msbuild {
-        solutionFile = file("${projectDir}/extern_dotnet.sln")
     }
 }
 
