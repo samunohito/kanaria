@@ -1,8 +1,7 @@
 Kanaria
+====
 
 [ ![Download](https://api.bintray.com/packages/sam-osamu/maven/com.kanaria.kanaria_jvm/images/download.svg?version=0.1.0) ](https://bintray.com/sam-osamu/maven/com.kanaria.kanaria_jvm/0.1.0/link)
-
-====
 
 このライブラリは、ひらがな・カタカナ、半角・全角の相互変換や判別を始めとした機能を提供します。
 
