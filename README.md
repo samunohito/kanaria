@@ -3,6 +3,8 @@ Kanaria
 
 このライブラリは、ひらがな・カタカナ、半角・全角の相互変換や判別を始めとした機能を提供します。
 
+[ ![Download](https://api.bintray.com/packages/sam-osamu/maven/com.kanaria.kanaria_jvm/images/download.svg) ](https://bintray.com/sam-osamu/maven/com.kanaria.kanaria_jvm/_latestVersion)
+
 ## Description
 
 変換処理は次のものをご用意しています。
@@ -61,22 +63,22 @@ Assert.AreEqual(hiragana, UcsString.From(katakana).Hiragana().ToString());
 ```
 
 ## Installation
-各言語で使用されるパッケージマネージャからインストールできます。
+各言語で使用されるパッケージマネージャやビルドツール等からインストールできます。
 
-Rust（https://crates.io/crates/kanaria）
+Rust（ https://crates.io/crates/kanaria ）
 ```toml:Cargo.toml
 [dependencies]
 kanaria = "0.1.1"
 ```
 <br>
 
-C#（https://www.nuget.org/packages/Kanaria.Net/）
+C#（ https://www.nuget.org/packages/Kanaria.Net/ ）
 ```bat
 PM> Install-Package Kanaria.Net -Version 0.1.2
 ```
 <br>
 
-Maven（https://bintray.com/sam-osamu/maven/com.kanaria.kanaria_jvm）
+Maven（ https://bintray.com/sam-osamu/maven/com.kanaria.kanaria_jvm ）
 ```xml:pom.xml
 <dependency>
   <groupId>com.kanaria</groupId>
@@ -87,7 +89,7 @@ Maven（https://bintray.com/sam-osamu/maven/com.kanaria.kanaria_jvm）
 ```
 <br>
 
-Gradle（https://bintray.com/sam-osamu/maven/com.kanaria.kanaria_jvm）
+Gradle（ https://bintray.com/sam-osamu/maven/com.kanaria.kanaria_jvm ）
 ```gradle:build.gradle
 compile 'com.kanaria:kanaria_jvm:0.1.0'
 ```
