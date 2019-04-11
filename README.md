@@ -74,6 +74,23 @@ C#（https://www.nuget.org/packages/Kanaria.Net/）
 ```bat
 PM> Install-Package Kanaria.Net -Version 0.1.2
 ```
+<br>
+
+Maven（https://bintray.com/sam-osamu/maven/com.kanaria.kanaria_jvm）
+```xml:pom.xml
+<dependency>
+  <groupId>com.kanaria</groupId>
+  <artifactId>kanaria_jvm</artifactId>
+  <version>0.1.0</version>
+  <type>pom</type>
+</dependency>
+```
+<br>
+
+Gradle（https://bintray.com/sam-osamu/maven/com.kanaria.kanaria_jvm）
+```gradle:build.gradle
+compile 'com.kanaria:kanaria_jvm:0.1.0'
+```
 
 ## API
 次のページをご参照ください（これはRust向けのものです）。<br>
