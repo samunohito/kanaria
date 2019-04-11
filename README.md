@@ -1,8 +1,6 @@
 Kanaria
 ====
 
-[ ![Download](https://api.bintray.com/packages/sam-osamu/maven/com.kanaria.kanaria_jvm/images/download.svg?version=0.1.0) ](https://bintray.com/sam-osamu/maven/com.kanaria.kanaria_jvm/0.1.0/link)
-
 このライブラリは、ひらがな・カタカナ、半角・全角の相互変換や判別を始めとした機能を提供します。
 
 ## Description
@@ -75,6 +73,23 @@ kanaria = "0.1.1"
 C#（https://www.nuget.org/packages/Kanaria.Net/）
 ```bat
 PM> Install-Package Kanaria.Net -Version 0.1.2
+```
+<br>
+
+Maven（https://bintray.com/sam-osamu/maven/com.kanaria.kanaria_jvm）
+```xml:pom.xml
+<dependency>
+  <groupId>com.kanaria</groupId>
+  <artifactId>kanaria_jvm</artifactId>
+  <version>0.1.0</version>
+  <type>pom</type>
+</dependency>
+```
+<br>
+
+Gradle（https://bintray.com/sam-osamu/maven/com.kanaria.kanaria_jvm）
+```gradle:build.gradle
+compile 'com.kanaria:kanaria_jvm:0.1.0'
 ```
 
 ## API
