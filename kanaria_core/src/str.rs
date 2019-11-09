@@ -7,9 +7,8 @@ use crate::str::ConvertType::{Hiragana, Katakana, LowerCase, Narrow, None, Upper
 use crate::UCSChar;
 use crate::utils::ConvertTarget;
 
-#[derive(Debug)]
-#[derive(PartialEq)]
-enum ConvertType {
+#[derive(Debug, PartialEq, Copy, Clone)]
+pub enum ConvertType {
     /// アルファベット大文字に変換します。
     UpperCase,
     /// アルファベット小文字に変換します。
@@ -26,7 +25,7 @@ enum ConvertType {
     None,
 }
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq, Copy, Clone)]
 struct ConvertParameter {
     /// 変換先の種別を保持します。
     convert_type: ConvertType,
@@ -186,6 +185,7 @@ impl<'a, T> UCSStr<T> where T: UCSChar {
     ///
     /// ```
     /// use kanaria::UCSStr;
+    /// use kanaria::utils::ConvertTarget;
     ///
     /// let target = vec!['ﾌ', 'ｼ', 'ﾞ', 'ｻ', 'ﾝ'];
     /// let result = UCSStr::from_slice(target.as_slice())
@@ -196,7 +196,7 @@ impl<'a, T> UCSStr<T> where T: UCSChar {
     /// assert_eq!(result, vec!['フ','ジ','サ','ン']);
     ///
     /// let target2 = vec!['1', '2', '3', 'a', 'b', 'c'];
-    /// let result2 = UCSStr::from_slice(target.as_slice())
+    /// let result2 = UCSStr::from_slice(target2.as_slice())
     ///     .wide(ConvertTarget::NUMBER)
     ///     .to_vec();
     ///
@@ -226,8 +226,8 @@ impl<'a, T> UCSStr<T> where T: UCSChar {
     /// assert_eq!(result, vec!['ｶ','ﾞ','ｷ','ﾞ','ｸ','ﾞ','ｹ','ﾞ','ｺ','ﾞ']);
     ///
     /// let target2 = vec!['１', '２', '３', 'Ａ', 'Ｂ', 'Ｃ'];
-    /// let result2 = UCSStr::from_slice(target.as_slice())
-    ///     .wide(ConvertTarget::ALPHABET)
+    /// let result2 = UCSStr::from_slice(target2.as_slice())
+    ///     .narrow(ConvertTarget::ALPHABET)
     ///     .to_vec();
     /// assert_eq!(result2, vec!['１', '２', '３', 'A', 'B', 'C']);
     /// ```
@@ -320,54 +320,90 @@ impl<'a, T> UCSStr<T> where T: UCSChar {
 
         unsafe {
             self.convert_params.iter().for_each(|convert_param| {
-//                let mut tmp = if convert_param.convert_type == ConvertType::Narrow {
-//                    self.convert_for_narrow(&buffer)
-//                } else if convert_param.convert_type == ConvertType::Wide {
-//                    self.convert_for_wide(&buffer)
-//                } else {
-//                    match convert_param.convert_type {
-//                        UpperCase => self.convert(&buffer, AsciiUtils::convert_to_upper_case),
-//                        LowerCase => self.convert(&buffer, AsciiUtils::convert_to_lower_case),
-//                        Hiragana => self.convert(&buffer, KanaUtils::convert_to_hiragana),
-//                        Katakana => self.convert(&buffer, KanaUtils::convert_to_katakana),
-//                        _ => self.convert(&buffer, |dummy| {
-//
-//                            dummy
-//                        }),
-//                    }
-//                };
+                let len = if convert_param.convert_type == ConvertType::Narrow {
+                    // 変換先が半角の場合文字数が増える可能性があるので２倍の領域を取る
+                    buffer.len() * 2
+                } else {
+                    buffer.len()
+                };
 
-                println!("{:?}", self.convert(&buffer, KanaUtils::convert_to_katakana));
+                let mut tmp = Vec::with_capacity(len);
+                tmp.set_len(len);
+
+                let dst_len: usize = Self::convert(
+                    buffer.as_ptr(),
+                    tmp.as_mut_ptr(),
+                    buffer.len(),
+                    convert_param.convert_type,
+                    convert_param.width_convert_target,
+                );
+
+                buffer = tmp.clone();
+                buffer.set_len(dst_len);
             });
         }
 
         return buffer;
     }
 
+    /// 文字列を変換し、Vecとして返却します。
+    ///　convert_typeがWideまたはNarrowの場合、convert_targetフラグを利用することにより、変換する文字種別を
+    /// 数値、アルファベット、記号、カタカナのいずれか（複数指定可）に限定することが出来ます。
+    /// WideまたはNarrow以外の場合、この設定値は無視されます。
+    /// # Examples
+    ///
+    /// ```
+    /// use kanaria::UCSStr;
+    /// use kanaria::str::ConvertType::Katakana;
+    /// use kanaria::utils::ConvertTarget;
+    ///
+    /// let target = vec!['あ', 'い', 'う', 'え', 'お'];
+    /// let mut result = Vec::with_capacity(target.len());
+    /// unsafe {
+    ///     result.set_len(target.len());
+    ///     UCSStr::convert(target.as_ptr(), result.as_mut_ptr(), target.len(), Katakana, ConvertTarget::ALL);
+    /// }
+    ///
+    /// assert_eq!(result, vec!['ア', 'イ', 'ウ', 'エ', 'オ'])
+    /// ```
+    pub unsafe fn convert(src_ptr: *const T, dst_ptr: *mut T, src_len: usize, convert_type: ConvertType, convert_target: ConvertTarget) -> usize where T: UCSChar {
+        if convert_type == ConvertType::Narrow {
+            Self::convert_internal_to_narrow(src_ptr, dst_ptr, src_len, convert_target)
+        } else if convert_type == ConvertType::Wide {
+            Self::convert_internal_to_wide(src_ptr, dst_ptr, src_len, convert_target)
+        } else {
+            match convert_type {
+                UpperCase => Self::convert_internal(src_ptr, dst_ptr, src_len, AsciiUtils::convert_to_upper_case),
+                LowerCase => Self::convert_internal(src_ptr, dst_ptr, src_len, AsciiUtils::convert_to_lower_case),
+                Hiragana => Self::convert_internal(src_ptr, dst_ptr, src_len, KanaUtils::convert_to_hiragana),
+                Katakana => Self::convert_internal(src_ptr, dst_ptr, src_len, KanaUtils::convert_to_katakana),
+                _ => Self::convert_internal(src_ptr, dst_ptr, src_len, |dummy| {
+                    dummy
+                }),
+            }
+        }
+    }
+
     /// コンバータを使用して文字列を変換します。
-    unsafe fn convert(&self, src: &[T], converter: fn(T) -> T) -> Vec<T> where T: UCSChar {
-        let mut dst = Vec::<T>::with_capacity(src.len());
-        let dst_ptr = dst.as_mut_ptr();
+    unsafe fn convert_internal(src_ptr: *const T, dst_ptr: *mut T, len: usize, converter: fn(T) -> T) -> usize {
         let mut dst_ptr_offset: isize = 0;
 
-        src.iter()
+        let accessor = from_raw_parts(src_ptr, len);
+        accessor.iter()
             .map(|ptr| converter(*ptr))
             .for_each(|item| {
-                println!("{:?}", dst);
                 dst_ptr.offset(dst_ptr_offset).write(item);
                 dst_ptr_offset += 1;
             });
 
-        return dst;
+        return dst_ptr_offset as usize;
     }
 
     /// 半角文字列を全角に変換します。
-    unsafe fn convert_for_wide(&self, src: &[T]) -> Vec<T> where T: UCSChar {
-        let mut dst = Vec::<T>::with_capacity(src.len());
-        let dst_ptr = dst.as_mut_ptr();
+    unsafe fn convert_internal_to_wide(src_ptr: *const T, dst_ptr: *mut T, len: usize, convert_target: ConvertTarget) -> usize {
         let mut dst_ptr_offset: isize = 0;
 
-        let accessor = from_raw_parts(src.as_ptr(), src.len());
+        let accessor = from_raw_parts(src_ptr, len);
         let mut iter = accessor.iter().enumerate();
         while let Some((index, current_ref)) = iter.next() {
             // 濁音・半濁音の結合処理のため、1つ先の文字も同時に取得する
@@ -377,40 +413,50 @@ impl<'a, T> UCSStr<T> where T: UCSChar {
                 _ => T::NULL,
             };
 
-            let (ret, is_pad) = WidthUtils::convert_to_wide(current, next);
-            dst_ptr.offset(dst_ptr_offset).write(ret);
-            dst_ptr_offset += 1;
+            if Self::check_target_char(current, convert_target) {
+                let (ret, is_pad) = WidthUtils::convert_to_wide(current, next);
+                dst_ptr.offset(dst_ptr_offset).write(ret);
+                dst_ptr_offset += 1;
 
-            if is_pad {
-                // 結合済みの場合は次を読み飛ばす
-                iter.next();
+                if is_pad {
+                    // 結合済みの場合は次を読み飛ばす
+                    iter.next();
+                }
+            } else {
+                // 対象外の場合はそのまま書き込む
+                dst_ptr.offset(dst_ptr_offset).write(current);
+                dst_ptr_offset += 1;
             }
         }
 
-        return dst;
+        return dst_ptr_offset as usize;
     }
 
     /// 全角文字列を全角に変換します。
-    unsafe fn convert_for_narrow(&self, src: &[T]) -> Vec<T> where T: UCSChar {
-        let mut dst = Vec::<T>::with_capacity(src.len() * 2);
-        let dst_ptr = dst.as_mut_ptr();
+    unsafe fn convert_internal_to_narrow(src_ptr: *const T, dst_ptr: *mut T, len: usize, convert_target: ConvertTarget) -> usize where T: UCSChar {
         let mut dst_ptr_offset: isize = 0;
 
-        let accessor = from_raw_parts(src.as_ptr(), src.len());
+        let accessor = from_raw_parts(src_ptr, len);
         accessor.iter().for_each(|target| {
-            let (first_char, second_char) = WidthUtils::convert_to_narrow(*target);
+            if Self::check_target_char(*target, convert_target) {
+                let (first_char, second_char) = WidthUtils::convert_to_narrow(*target);
 
-            dst_ptr.offset(dst_ptr_offset).write(first_char);
-            dst_ptr_offset += 1;
+                dst_ptr.offset(dst_ptr_offset).write(first_char);
+                dst_ptr_offset += 1;
 
-            if !second_char.is_null() {
-                // 2つ目の戻り値が0以外の場合は濁音・半濁音が入っているのでポインタに追記する
-                dst_ptr.offset(dst_ptr_offset).write(second_char);
+                if !second_char.is_null() {
+                    // 2つ目の戻り値が0以外の場合は濁音・半濁音が入っているのでポインタに追記する
+                    dst_ptr.offset(dst_ptr_offset).write(second_char);
+                    dst_ptr_offset += 1;
+                }
+            } else {
+                // 対象外の場合はそのまま書き込む
+                dst_ptr.offset(dst_ptr_offset).write(*target);
                 dst_ptr_offset += 1;
             }
         });
 
-        return dst;
+        return dst_ptr_offset as usize;
     }
 
     /// サロゲートペアとして分割されていた文字を結合します。
@@ -432,5 +478,31 @@ impl<'a, T> UCSStr<T> where T: UCSChar {
         } else {
             u32::NULL
         }
+    }
+
+    /// 処理対象の文字かどうかをチェックします。
+    fn check_target_char(target_char: T, convert_target: ConvertTarget) -> bool {
+        return Self::check_target_char_number(target_char, convert_target) || Self::check_target_char_alphabet(target_char, convert_target) ||
+            Self::check_target_char_symbol(target_char, convert_target) || Self::check_target_char_katakana(target_char, convert_target);
+    }
+
+    /// 処理対象が数字かどうかをチェックします。
+    fn check_target_char_number(target_char: T, convert_target: ConvertTarget) -> bool {
+        convert_target.contains(ConvertTarget::NUMBER) && AsciiUtils::is_number(target_char)
+    }
+
+    /// 処理対象がアルファベットかどうかをチェックします。半角・全角、大文字・小文字は問いません。
+    fn check_target_char_alphabet(target_char: T, convert_target: ConvertTarget) -> bool {
+        convert_target.contains(ConvertTarget::ALPHABET) && (AsciiUtils::is_lower_case(target_char) || AsciiUtils::is_upper_case(target_char))
+    }
+
+    /// 処理対象が記号かどうかをチェックします。JIS記号も含みます。半角・全角は問いません。
+    fn check_target_char_symbol(target_char: T, convert_target: ConvertTarget) -> bool {
+        convert_target.contains(ConvertTarget::SYMBOL) && (AsciiUtils::is_ascii_symbol(target_char) || KanaUtils::is_jis_symbol(target_char))
+    }
+
+    /// 処理対象がカタカナかどうかをチェックします。半角・全角は問いません。
+    fn check_target_char_katakana(target_char: T, convert_target: ConvertTarget) -> bool {
+        convert_target.contains(ConvertTarget::KATAKANA) && KanaUtils::is_katakana(target_char)
     }
 }

@@ -43,6 +43,8 @@ fn example_sentence_4() {
 fn example_sentence_5() {
     let source = "吾輩は😺猫である😺";
     let expect = "吾輩ﾊ😺猫ﾃﾞｱﾙ😺";
+    let expect2 = "吾輩ハ😺猫デアル😺";
 
     assert_eq!(expect.to_string(), UCSStr::from_str(source).katakana().narrow(ConvertTarget::ALL).to_string());
+    assert_eq!(expect2.to_string(), UCSStr::from_str(source).katakana().narrow(ConvertTarget::NUMBER | ConvertTarget::SYMBOL | ConvertTarget::ALPHABET).to_string());
 }
