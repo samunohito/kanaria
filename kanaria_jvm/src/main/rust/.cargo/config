@@ -31,13 +31,13 @@ linker = "/usr/bin/arm-linux-gnueabihf-gcc-7"
 linker = "/usr/bin/aarch64-linux-gnu-gcc-7"
 
 [target.i686-linux-android]
-linker = "/mnt/z/Users/wwwdd_old/Documents/git/kanaria/kanaria_jvm/src/main/rust/AndroidNDK/x86/bin/i686-linux-android-clang"
+#linker = "/mnt/z/Users/wwwdd_old/Documents/git/kanaria/kanaria_jvm/src/main/rust/AndroidNDK/x86/bin/i686-linux-android-clang"
 
 [target.x86_64-linux-android]
-linker = "/mnt/z/Users/wwwdd_old/Documents/git/kanaria/kanaria_jvm/src/main/rust/AndroidNDK/x86_64/bin/x86_64-linux-android-clang"
+#linker = "/mnt/z/Users/wwwdd_old/Documents/git/kanaria/kanaria_jvm/src/main/rust/AndroidNDK/x86_64/bin/x86_64-linux-android-clang"
 
 [target.armv7-linux-androideabi]
-linker = "/mnt/z/Users/wwwdd_old/Documents/git/kanaria/kanaria_jvm/src/main/rust/AndroidNDK/arm/bin/arm-linux-androideabi-clang"
+#linker = "/mnt/z/Users/wwwdd_old/Documents/git/kanaria/kanaria_jvm/src/main/rust/AndroidNDK/arm/bin/arm-linux-androideabi-clang"
 
 [target.aarch64-linux-android]
-linker = "/mnt/z/Users/wwwdd_old/Documents/git/kanaria/kanaria_jvm/src/main/rust/AndroidNDK/arm64/bin/aarch64-linux-android-clang"
+#linker = "/mnt/z/Users/wwwdd_old/Documents/git/kanaria/kanaria_jvm/src/main/rust/AndroidNDK/arm64/bin/aarch64-linux-android-clang"

@@ -15,7 +15,7 @@ exclude = [
 ]
 
 [dependencies]
-
+bitflags = "1.2.1"
 
 [lib]
 name = "kanaria"

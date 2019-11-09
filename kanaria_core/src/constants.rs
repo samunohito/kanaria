@@ -1,5 +1,14 @@
 #[allow(dead_code)]
 
+/// 半角・全角の変換対象として数値を設定する際のビットフラグです。
+pub const CONVERT_TARGET_NUMBER: u32 = 0b00000001;
+/// 半角・全角の変換対象としてアルファベットを設定する際のビットフラグです。
+pub const CONVERT_TARGET_ALPHABET: u32 = 0b00000010;
+/// 半角・全角の変換対象として記号を設定する際のビットフラグです。
+pub const CONVERT_TARGET_SYMBOL: u32 = 0b00000100;
+/// 半角・全角の変換対象としてカタカナを設定する際のビットフラグです。
+pub const CONVERT_TARGET_KATAKANA: u32 = 0b00001000;
+
 /// 半角 ASCII文字 記号 SPACE
 pub const NARROW_ASCII_SYMBOL_SPACE: u32 = 0x0020;
 /// 半角 ASCII文字 記号 EXCLAMATION_MARK
