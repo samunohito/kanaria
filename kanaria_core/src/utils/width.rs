@@ -11,7 +11,6 @@ bitflags! {
     }
 }
 
-
 pub struct WidthUtils;
 
 impl WidthUtils {
