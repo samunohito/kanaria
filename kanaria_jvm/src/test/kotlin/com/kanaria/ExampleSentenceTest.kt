@@ -180,4 +180,15 @@ class ExampleSentenceTest {
         Assert.assertNotEquals(0.toChar(), narrowResult.second)
         Assert.assertNotEquals('ﾟ', narrowResult.second)
     }
+
+    @Test
+    fun exampleSentence9() {
+        val source = "吾輩は😺猫である😺";
+        val expect = "吾輩ﾊ😺猫ﾃﾞｱﾙ😺";
+        val expect2 = "吾輩ハ😺猫デアル😺";
+
+        KanariaLoader.load()
+        Assert.assertEquals(expect, UcsString.from(source).katakana().narrow(UcsString.CONVERT_TARGET_ALL).toString());
+        Assert.assertEquals(expect2, UcsString.from(source).katakana().narrow(UcsString.CONVERT_TARGET_NUMBER or UcsString.CONVERT_TARGET_SYMBOL or UcsString.CONVERT_TARGET_ALPHABET).toString());
+    }
 }

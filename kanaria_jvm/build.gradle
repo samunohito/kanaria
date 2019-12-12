@@ -1,3 +1,6 @@
+import groovy.json.JsonSlurper
+import sun.nio.fs.UnixPath
+
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -20,7 +23,7 @@ dokka {
     outputDirectory = "$buildDir/javadoc"
 }
 
-sourceCompatibility = 1.8
+sourceCompatibility = 11
 mainClassName = ""
 
 apply from: 'jcenter.gradle'
@@ -85,11 +88,11 @@ def supportAndroid = true
 
 if (supportAndroid) {
     // It is necessary to set the path which expanded the archive of NDK.
-    def androidNdkHome = Paths.get(
+    def buildToolsDir = Paths.get(
             // For example, when using Windows
             // "C:\\android-ndk-r19c"
             // For example, when using Linux
-            "~/android-ndk-r19c/"
+            "/usr/local/android-ndk-r20/toolchains/llvm/prebuilt/linux-x86_64/bin/"
     )
 
     def rustAndroidPlatforms = [
@@ -100,24 +103,26 @@ if (supportAndroid) {
             "aarch64-linux-android",
     ]
 
+    def toolchainPath = Paths.get(projectDir.toPath().toString(), "/toolchain.json")
+
     task("rustAndroidPlatformsInstall") << {
-        new AndroidNdkPlatform(rustSrcDir, rustAndroidPlatforms, androidNdkHome).install()
+        new AndroidNdkPlatform(rustSrcDir, rustAndroidPlatforms, buildToolsDir, toolchainPath).install()
     }
 
     task("rustBuildAndroidDebug") << {
-        new AndroidNdkPlatform(rustSrcDir, rustAndroidPlatforms, androidNdkHome).build(RustPlatform.BuildMode.Debug)
+        new AndroidNdkPlatform(rustSrcDir, rustAndroidPlatforms, buildToolsDir, toolchainPath).build(RustPlatform.BuildMode.Debug)
     }
 
     task("rustBuildAndroidRelease") << {
-        new AndroidNdkPlatform(rustSrcDir, rustAndroidPlatforms, androidNdkHome).build(RustPlatform.BuildMode.Release)
+        new AndroidNdkPlatform(rustSrcDir, rustAndroidPlatforms, buildToolsDir, toolchainPath).build(RustPlatform.BuildMode.Release)
     }
 
     task("rustDeployAndroidDebug") << {
-        new AndroidNdkPlatform(rustSrcDir, rustAndroidPlatforms, androidNdkHome).deploy(RustPlatform.BuildMode.Debug)
+        new AndroidNdkPlatform(rustSrcDir, rustAndroidPlatforms, buildToolsDir, toolchainPath).deploy(RustPlatform.BuildMode.Debug)
     }
 
     task("rustDeployAndroidRelease") << {
-        new AndroidNdkPlatform(rustSrcDir, rustAndroidPlatforms, androidNdkHome).deploy(RustPlatform.BuildMode.Release)
+        new AndroidNdkPlatform(rustSrcDir, rustAndroidPlatforms, buildToolsDir, toolchainPath).deploy(RustPlatform.BuildMode.Release)
     }
 
     tasks["rustBuildAndroidDebug"].dependsOn(["rustPlatformsInstall", "rustAndroidPlatformsInstall"])
@@ -185,35 +190,20 @@ class RustPlatform extends AbstractPlatform {
 }
 
 class AndroidNdkPlatform extends RustPlatform {
-    def androidNdkHome = Paths.get("")
+    Path buildToolsDir = null
+    Path manifestPath = null
+    Object manifestJson = null;
 
-    AndroidNdkPlatform(Path buildTargetPath, List<String> rustPlatforms, Path androidNdkHome) {
+    AndroidNdkPlatform(Path buildTargetPath, List<String> rustPlatforms, Path buildToolsDir, Path manifest) {
         super(buildTargetPath, rustPlatforms)
-        this.androidNdkHome = androidNdkHome
+        this.buildToolsDir = buildToolsDir
+        this.manifestPath = manifest;
     }
 
     @Override
-    def install() {
-        super.install()
-
-        def makeStandalonePlatformScriptPath = Paths.get(androidNdkHome.toString(), "build", "tools", "make_standalone_platform.py")
-        rustPlatforms.forEach {
-            def archAlias = getArchAliasForInstall(getArch(it))
-            def installPath = Paths.get(buildTargetPath.toString(), "AndroidNDK", archAlias)
-            if (Paths.get(installPath.toString(), "AndroidVersion.txt").toFile().exists()) {
-                println("[$it : $archAlias] already installed ndk for $archAlias.")
-                return null
-            }
-
-            println("[$it : $archAlias] install start.")
-            run("python", makeStandalonePlatformScriptPath.toString(), "--arch", archAlias, "--api", "26", "--install-dir", installPath.toString())
-            println("[$it : $archAlias] install finish!")
-        }
-
-        return this
-    }
-
     def build(BuildMode mode) {
+        def bin = buildToolsDir.toString()
+
         rustPlatforms.forEach {
             if (isWindows() && !it.contains("windows")) {
                 println("[$it] The build is running on Windows. Other than platforms for Windows are not supported.")
@@ -222,19 +212,45 @@ class AndroidNdkPlatform extends RustPlatform {
 
             println("[$it] compile start.")
 
-            def pathBuilder = new StringBuilder()
-                    .append(System.getenv("PATH"))
-                    .append(":")
-                    .append(buildTargetPath)
-                    .append("/AndroidNDK/")
-                    .append(getArchAliasForInstall(getArch(it)))
-                    .append("/bin/")
+            putEnv(it, bin, "AR")
+            putEnv(it, bin, "AS")
+            putEnv(it, bin, "CC")
+            putEnv(it, bin, "CXX")
+            putEnv(it, bin, "LD")
+            putEnv(it, bin, "RANLIB")
+            putEnv(it, bin, "STRIP")
 
-            env.put("PATH", pathBuilder.toString())
             run("cargo", "build", "--target", it, ((mode == BuildMode.Release) ? "--release" : ""))
             println("[$it] compile finish!")
         }
         return this
+    }
+
+    def putEnv(String platformName, String bin, String envName) {
+        Object manifest = getManifest()
+        if (manifest == null) {
+            return
+        }
+
+        def platform = manifest[platformName]
+        if (platform == null){
+            return
+        }
+
+        def envValue = platform[envName]
+        if (envValue == null){
+            return
+        }
+
+        env.put(envName, bin + envValue.toString())
+    }
+
+    def getManifest() {
+        if (this.manifestJson == null && this.manifestPath.toFile().exists()) {
+            this.manifestJson = new JsonSlurper().parseText(this.manifestPath.toFile().text)
+        }
+
+        return this.manifestJson
     }
 }
 
@@ -296,36 +312,6 @@ class AbstractPlatform {
 
     protected static def getArch(String rustPlatformName) {
         rustPlatformName.split('-')[0]
-    }
-
-    protected static def getArchAliasForInstall(String arch) {
-        switch (arch) {
-            case "i686":
-                return "x86"
-            case "x86_64":
-                return "x86_64"
-            case "armv7":
-                return "arm"
-            case "aarch64":
-                return "arm64"
-            default:
-                throw new InvalidRustException("not support arcitecture : $arch")
-        }
-    }
-
-    protected static def getArchAliasForBuild(String arch) {
-        switch (arch) {
-            case "i686":
-                return "x86"
-            case "x86_64":
-                return "x86_64"
-            case "armv7":
-                return "armv7a"
-            case "aarch64":
-                return "aarch64"
-            default:
-                throw new InvalidRustException("not support arcitecture : $arch")
-        }
     }
 
     private class PrintBuffer implements Appendable {

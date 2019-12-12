@@ -6,7 +6,7 @@ edition = "2018"
 
 [dependencies]
 kanaria = { path = "../../../../kanaria_core" }
-jni = "0.11.0"
+jni = "0.14.0"
 
 [lib]
 name = "kanaria_jni"
