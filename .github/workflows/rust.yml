@@ -9,7 +9,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - name: Build
+    - name: Build Core
+      working-directory: kanaria_core
       run: cargo build --verbose
-    - name: Run tests
+    - name: Run Core tests
+      working-directory: kanaria_core
       run: cargo test --verbose
