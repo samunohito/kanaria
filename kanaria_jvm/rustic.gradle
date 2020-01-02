@@ -1,0 +1,195 @@
+import java.nio.file.Files
+import java.nio.file.Paths
+
+static def getOutputFileName(String target) {
+    return target.contains("windows") ? "kanaria_jni.dll" : "libkanaria_jni.so"
+}
+
+rustic {
+    projectSettings {
+        projectLocation "$projectDir/src/main/rust"
+        jobs 4
+    }
+
+    flavors {
+        "i686-pc-windows-gnu" {
+            target "i686-pc-windows-gnu"
+            environments = [
+                    AR: "/usr/bin/i686-w64-mingw32-gcc-ar",
+                    CC: "/usr/bin/i686-w64-mingw32-gcc",
+                    CARGO_TARGET_I686_PC_WINDOWS_GNU_RUSTFLAGS: "-C panic=abort"
+            ]
+            ext {
+                outputFileName = getOutputFileName(target)
+            }
+        }
+
+        "x86_64-pc-windows-gnu" {
+            target "x86_64-pc-windows-gnu"
+            environments = [
+                    AR: "/usr/bin/x86_64-w64-mingw32-gcc-ar",
+                    CC: "/usr/bin/x86_64-w64-mingw32-gcc"
+            ]
+            ext {
+                outputFileName = getOutputFileName(target)
+            }
+        }
+
+        "i686-apple-darwin" {
+            enabled false
+            target "i686-apple-darwin"
+            environments = [
+                    AR: "",
+                    CC: ""
+            ]
+            ext {
+                outputFileName = getOutputFileName(target)
+            }
+        }
+
+        "x86_64-apple-darwin" {
+            enabled false
+            target "x86_64-apple-darwin"
+            environments = [
+                    AR: "",
+                    CC: ""
+            ]
+            ext {
+                outputFileName = getOutputFileName(target)
+            }
+        }
+
+        "i686-unknown-linux-gnu" {
+            target "i686-unknown-linux-gnu"
+            environments = [
+                    AR: "/usr/bin/i686-linux-gnu-gcc-ar-8",
+                    CC: "/usr/bin/i686-linux-gnu-gcc-8"
+            ]
+            ext {
+                outputFileName = getOutputFileName(target)
+            }
+        }
+
+        "x86_64-unknown-linux-gnu" {
+            target "x86_64-unknown-linux-gnu"
+            environments = [
+                    AR: "/usr/bin/x86_64-linux-gnu-gcc-ar-8",
+                    CC: "/usr/bin/x86_64-linux-gnu-gcc-8"
+            ]
+            ext {
+                outputFileName = getOutputFileName(target)
+            }
+        }
+
+        "arm-unknown-linux-gnueabihf" {
+            target "arm-unknown-linux-gnueabihf"
+            environments = [
+                    AR: "/usr/bin/arm-linux-gnueabihf-gcc-ar-8",
+                    CC: "/usr/bin/arm-linux-gnueabihf-gcc-8"
+            ]
+            ext {
+                outputFileName = getOutputFileName(target)
+            }
+        }
+
+        "aarch64-unknown-linux-gnu" {
+            target "aarch64-unknown-linux-gnu"
+            environments = [
+                    AR: "/usr/bin/aarch64-linux-gnu-gcc-ar-8",
+                    CC: "/usr/bin/aarch64-linux-gnu-gcc-8"
+            ]
+            ext {
+                outputFileName = getOutputFileName(target)
+            }
+        }
+
+        "i686-linux-android" {
+            target "i686-linux-android"
+            environments = [
+                    AR: "/usr/local/lib/android-ndk-r20b/toolchains/llvm/prebuilt/linux-x86_64/bin/i686-linux-android-ar",
+                    CC: "/usr/local/lib/android-ndk-r20b/toolchains/llvm/prebuilt/linux-x86_64/bin/i686-linux-android26-clang"
+            ]
+            ext {
+                outputFileName = getOutputFileName(target)
+            }
+        }
+
+        "x86_64-linux-android" {
+            target "x86_64-linux-android"
+            environments = [
+                    AR: "/usr/local/lib/android-ndk-r20b/toolchains/llvm/prebuilt/linux-x86_64/bin/x86_64-linux-android-ar",
+                    CC: "/usr/local/lib/android-ndk-r20b/toolchains/llvm/prebuilt/linux-x86_64/bin/x86_64-linux-android26-clang"
+            ]
+            ext {
+                outputFileName = getOutputFileName(target)
+            }
+        }
+
+        "arm-linux-androideabi" {
+            target "arm-linux-androideabi"
+            environments = [
+                    AR: "/usr/local/lib/android-ndk-r20b/toolchains/llvm/prebuilt/linux-x86_64/bin/arm-linux-androideabi-ar",
+                    CC: "/usr/local/lib/android-ndk-r20b/toolchains/llvm/prebuilt/linux-x86_64/bin/armv7a-linux-androideabi26-clang"
+            ]
+            ext {
+                outputFileName = getOutputFileName(target)
+            }
+        }
+
+        "aarch64-linux-android" {
+            target "aarch64-linux-android"
+            environments = [
+                    AR: "/usr/local/lib/android-ndk-r20b/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android-ar",
+                    CC: "/usr/local/lib/android-ndk-r20b/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android26-clang"
+            ]
+            ext {
+                outputFileName = getOutputFileName(target)
+            }
+        }
+    }
+
+    variants.all {
+        if (it.enabled == false) {
+            // 無効化されているvariantは処理しない
+            return
+        }
+
+        // .cargo/configの設定値であるlinker相当の環境変数を設定。CCと同じやつでOK
+        String target = it.target
+        String cc = it.environments["CC"]
+        if (target != null && cc != null) {
+            String linkerEnvName = "CARGO_TARGET_" + target.replace("-", "_").toUpperCase() + "_LINKER"
+            it.environments.put(linkerEnvName, cc)
+        }
+
+        // リリースビルドに限り、ビルド成果物をKotlin側ソースのリソースディレクトリに配置する
+        boolean isRelease = it.buildOptions.debug == false
+        boolean hasOutputFileName = it.flavor.hasProperty("outputFileName")
+        Task buildTask = tasks["rustBuild" + it.name.toString()]
+        if (target != null && isRelease && hasOutputFileName && buildTask != null) {
+            java.nio.file.Path srcFilePath = Paths.get(it.outputPath.toString(), it.flavor.outputFileName.toString())
+            String dstFileName = srcFilePath.getFileName().toString()
+            java.nio.file.Path dstFilePath = Paths.get(
+                    "$projectDir/src/main/resources/com/kanaria/platforms/${target}/",
+                    dstFileName.substring(0, dstFileName.lastIndexOf('.'))
+            )
+
+            // variants#all()の実行時点ではビルドが走っておらず成果物がないため、
+            // ビルドの後処理としてコピー処理を設定する
+            buildTask.doLast {
+                if (!Files.exists(dstFilePath.parent)) {
+                    Files.createDirectories(dstFilePath.parent)
+                }
+
+                if (Files.exists(dstFilePath)) {
+                    Files.delete(dstFilePath)
+                }
+
+                println("Copy the build output from rustBuild to src/main/resources.")
+                println("  copy from : " + srcFilePath)
+                println("  copy to   : " + dstFilePath)
+                Files.copy(srcFilePath, dstFilePath)
+            }
+        }
+    }
+}

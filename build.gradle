@@ -1,11 +1,15 @@
-plugins {
-    id 'org.ysb33r.rust.lib'  version '0.2'
-    id 'com.ullink.msbuild' version '3.1'
-    id 'com.ullink.nunit' version '1.12'
-    id 'org.jetbrains.kotlin.jvm' version '1.3.11'
-    id 'org.jetbrains.dokka' version '0.9.18'
-    id "com.jfrog.bintray" version "1.8.4"
-    id 'maven'
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.61"
+        classpath "org.jetbrains.dokka:dokka-gradle-plugin:0.10.0"
+        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4"
+        classpath files("plugins/rustic-0.1.0.jar")
+    }
 }
 
 allprojects {
@@ -13,23 +17,6 @@ allprojects {
         jcenter()
         mavenCentral()
     }
+
+    apply plugin: 'com.osm.gradle.plugins.rustic'
 }
-
-// ---------------------------------------------------------------------------------------------------------------
-
-def DOC_PATH = file("${rootDir}/docs")
-def DOC_GEN_PATH = file("${rootDir}/core/target/doc")
-
-task syncRustDoc(type: Sync) {
-    from DOC_GEN_PATH.absolutePath
-    into DOC_PATH.absolutePath
-}
-
-task generateRustDoc(type: Exec) {
-    workingDir = file("${rootDir}/core")
-    commandLine = ["cargo", "doc"]
-}
-
-task deployRustDoc {}
-deployRustDoc.dependsOn(generateRustDoc)
-deployRustDoc.dependsOn(syncRustDoc)
