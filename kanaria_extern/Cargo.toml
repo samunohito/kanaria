@@ -8,6 +8,6 @@ edition = "2018"
 kanaria = { path = "../kanaria_core" }
 
 [lib]
-name = "kanaria_core"
+name = "kanaria"
 path = "src/lib.rs"
 crate-type = ["dylib"]
