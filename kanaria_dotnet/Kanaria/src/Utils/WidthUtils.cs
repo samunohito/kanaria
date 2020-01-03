@@ -13,7 +13,7 @@ namespace Kanaria.Utils
         /// <param name="next">次の文字。濁音・半濁音のように結合可能な文字の場合、targetとこの値を結合する。</param>
         /// <param name="is_pad">結合あり:true / 結合なし:false</param>
         /// <returns>変換後文字</returns>
-        [DllImport("kanaria_core.dll", EntryPoint = "convert_to_wide_for_utf16",
+        [DllImport("kanaria.dll", EntryPoint = "convert_to_wide_for_utf16",
             CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         [return:MarshalAs(UnmanagedType.U2)]
         public static extern char ConvertToWide(char target, char next, out bool is_pad);
@@ -26,7 +26,7 @@ namespace Kanaria.Utils
         /// <param name="target">変換対象文字</param>
         /// <param name="second">濁音記号等で増えた文字。増えなかった場合はnull文字（\u0000）。</param>
         /// <returns>変換後文字</returns>
-        [DllImport("kanaria_core.dll", EntryPoint = "convert_to_narrow_for_utf16",
+        [DllImport("kanaria.dll", EntryPoint = "convert_to_narrow_for_utf16",
             CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         [return:MarshalAs(UnmanagedType.U2)]
         public static extern char ConvertToNarrow(char target, out char second);

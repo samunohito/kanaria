@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -137,6 +138,8 @@ namespace Kanaria
                     case ConvertType.Narrow:
                         ToNarrow(tmpBuffer, (uint) tmpBuffer.Length, sb, (uint) sb.Capacity);
                         break;
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(type), type, null);
                 }
 
                 tmpBuffer = sb.ToString();
@@ -145,27 +148,27 @@ namespace Kanaria
             return tmpBuffer;
         }
 
-        [DllImport("kanaria_core.dll", EntryPoint = "to_upper_case_for_utf16",
+        [DllImport("kanaria.dll", EntryPoint = "to_upper_case_for_utf16",
             CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         private static extern uint ToUpperCase(string target, uint targetSize, StringBuilder result, uint resultSize);
 
-        [DllImport("kanaria_core.dll", EntryPoint = "to_lower_case_for_utf16",
+        [DllImport("kanaria.dll", EntryPoint = "to_lower_case_for_utf16",
             CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         private static extern uint ToLowerCase(string target, uint targetSize, StringBuilder result, uint resultSize);
 
-        [DllImport("kanaria_core.dll", EntryPoint = "to_hiragana_for_utf16",
+        [DllImport("kanaria.dll", EntryPoint = "to_hiragana_for_utf16",
             CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         private static extern uint ToHiragana(string target, uint targetSize, StringBuilder result, uint resultSize);
 
-        [DllImport("kanaria_core.dll", EntryPoint = "to_katakana_for_utf16",
+        [DllImport("kanaria.dll", EntryPoint = "to_katakana_for_utf16",
             CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         private static extern uint ToKatakana(string target, uint targetSize, StringBuilder result, uint resultSize);
 
-        [DllImport("kanaria_core.dll", EntryPoint = "to_wide_for_utf16",
+        [DllImport("kanaria.dll", EntryPoint = "to_wide_for_utf16",
             CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         private static extern uint ToWide(string target, uint targetSize, StringBuilder result, uint resultSize);
 
-        [DllImport("kanaria_core.dll", EntryPoint = "to_narrow_for_utf16",
+        [DllImport("kanaria.dll", EntryPoint = "to_narrow_for_utf16",
             CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         private static extern uint ToNarrow(string target, uint targetSize, StringBuilder result, uint resultSize);
 

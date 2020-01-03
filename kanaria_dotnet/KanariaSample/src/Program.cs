@@ -1,10 +1,9 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
 using CommandLine;
 using Kanaria;
 
-namespace KanariaExample
+namespace KanariaSample
 {
     internal static class Program {
         public static void Main(string[] args)

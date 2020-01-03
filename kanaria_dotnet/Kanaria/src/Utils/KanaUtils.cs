@@ -9,7 +9,7 @@ namespace Kanaria.Utils
         /// </summary>
         /// <param name="target">判定対象</param>
         /// <returns>該当:true / 非該当:false</returns>
-        [DllImport("kanaria_core.dll", EntryPoint = "is_hiragana_for_utf16",
+        [DllImport("kanaria.dll", EntryPoint = "is_hiragana_for_utf16",
             CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         [return:MarshalAs(UnmanagedType.I1)]
         public static extern bool IsHiragana(char target);
@@ -21,7 +21,7 @@ namespace Kanaria.Utils
         /// </summary>
         /// <param name="target">判定対象</param>
         /// <returns>該当:true / 非該当:false</returns>
-        [DllImport("kanaria_core.dll", EntryPoint = "is_katakana_for_utf16",
+        [DllImport("kanaria.dll", EntryPoint = "is_katakana_for_utf16",
             CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         [return:MarshalAs(UnmanagedType.I1)]
         public static extern bool IsKatakana(char target);
@@ -31,7 +31,7 @@ namespace Kanaria.Utils
         /// </summary>
         /// <param name="target">判定対象</param>
         /// <returns>該当:true / 非該当:false</returns>
-        [DllImport("kanaria_core.dll", EntryPoint = "is_narrow_katakana_for_utf16",
+        [DllImport("kanaria.dll", EntryPoint = "is_narrow_katakana_for_utf16",
             CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         [return:MarshalAs(UnmanagedType.I1)]
         public static extern bool IsNarrowKatakana(char target);
@@ -41,7 +41,7 @@ namespace Kanaria.Utils
         /// </summary>
         /// <param name="target">判定対象</param>
         /// <returns>該当:true / 非該当:false</returns>
-        [DllImport("kanaria_core.dll", EntryPoint = "is_wide_katakana_for_utf16",
+        [DllImport("kanaria.dll", EntryPoint = "is_wide_katakana_for_utf16",
             CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         [return:MarshalAs(UnmanagedType.I1)]
         public static extern bool IsWideKatakana(char target);
@@ -53,7 +53,7 @@ namespace Kanaria.Utils
         /// </summary>
         /// <param name="target">判定対象</param>
         /// <returns>該当:true / 非該当:false</returns>
-        [DllImport("kanaria_core.dll", EntryPoint = "is_jis_symbol",
+        [DllImport("kanaria.dll", EntryPoint = "is_jis_symbol",
             CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         [return:MarshalAs(UnmanagedType.I1)]
         public static extern bool IsJisSymbol(char target);
@@ -64,7 +64,7 @@ namespace Kanaria.Utils
         /// </summary>
         /// <param name="target">判定対象</param>
         /// <returns>該当:true / 非該当:false</returns>
-        [DllImport("kanaria_core.dll", EntryPoint = "is_narrow_jis_symbol_for_utf16",
+        [DllImport("kanaria.dll", EntryPoint = "is_narrow_jis_symbol_for_utf16",
             CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         [return:MarshalAs(UnmanagedType.I1)]
         public static extern bool IsNarrowJisSymbol(char target);
@@ -75,7 +75,7 @@ namespace Kanaria.Utils
         /// </summary>
         /// <param name="target">判定対象</param>
         /// <returns>該当:true / 非該当:false</returns>
-        [DllImport("kanaria_core.dll", EntryPoint = "is_wide_jis_symbol_for_utf16",
+        [DllImport("kanaria.dll", EntryPoint = "is_wide_jis_symbol_for_utf16",
             CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         [return:MarshalAs(UnmanagedType.I1)]
         public static extern bool IsWideJisSymbol(char target);
@@ -85,7 +85,7 @@ namespace Kanaria.Utils
         /// </summary>
         /// <param name="target">判定対象</param>
         /// <returns>該当:true / 非該当:false</returns>
-        [DllImport("kanaria_core.dll", EntryPoint = "is_can_convert_hiragana_for_utf16",
+        [DllImport("kanaria.dll", EntryPoint = "is_can_convert_hiragana_for_utf16",
             CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         [return:MarshalAs(UnmanagedType.I1)]
         public static extern bool IsCanShiftToHiragana(char target);
@@ -95,7 +95,7 @@ namespace Kanaria.Utils
         /// </summary>
         /// <param name="target">変換対象文字</param>
         /// <returns>変換後文字</returns>
-        [DllImport("kanaria_core.dll", EntryPoint = "convert_to_hiragana_for_utf16",
+        [DllImport("kanaria.dll", EntryPoint = "convert_to_hiragana_for_utf16",
             CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         [return:MarshalAs(UnmanagedType.U2)]
         public static extern char ConvertToHiragana(char target);
@@ -105,7 +105,7 @@ namespace Kanaria.Utils
         /// </summary>
         /// <param name="target">変換対象文字</para2m>
         /// <returns>変換後文字</returns>
-        [DllImport("kanaria_core.dll", EntryPoint = "convert_to_katakana_for_utf16",
+        [DllImport("kanaria.dll", EntryPoint = "convert_to_katakana_for_utf16",
             CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         [return:MarshalAs(UnmanagedType.U2)]
         public static extern char ConvertToKatakana(char target);

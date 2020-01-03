@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Kanaria;
-using KanariaBenchmark.Common.Generic;
-using KanariaBenchmark.External;
-using KanariaBenchmark.Properties;
+using KanariaTest.External;
 using Microsoft.VisualBasic;
 using NUnit.Framework;
 
-namespace KanariaBenchmark
+namespace KanariaTest
 {
     public class KanaConverterBenchmark
     {
@@ -18,15 +16,15 @@ namespace KanariaBenchmark
         {
             Bench(ExampleText.WAGAHAI, 10, new[]
             {
-                new Pair<string, Func<string, string>>("StrConv", targetText =>
+                new KeyValuePair<string, Func<string, string>>("StrConv", targetText =>
                 {
                     return Strings.StrConv(targetText, VbStrConv.Katakana, 0x411);
                 }),
-                new Pair<string, Func<string, string>>("kanaxs", targetText =>
+                new KeyValuePair<string, Func<string, string>>("kanaxs", targetText =>
                 {
                     return Kana.ToKatakana(targetText);
                 }),
-                new Pair<string, Func<string, string>>("Kanaria", targetText =>
+                new KeyValuePair<string, Func<string, string>>("Kanaria", targetText =>
                 {
                     return UcsString.From(targetText).Katakana().ToString();
                 }),
@@ -38,19 +36,19 @@ namespace KanariaBenchmark
         {
             Bench(ExampleText.WAGAHAI, 10, new[]
             {
-                new Pair<string, Func<string, string>>("StrConv", targetText =>
+                new KeyValuePair<string, Func<string, string>>("StrConv", targetText =>
                 {
                     var s = Strings.StrConv(targetText, VbStrConv.Hiragana, 0x411);
                     s = Strings.StrConv(s, VbStrConv.Katakana, 0x411);
                     return Strings.StrConv(s, VbStrConv.Narrow, 0x411);
                 }),
-                new Pair<string, Func<string, string>>("kanaxs", targetText =>
+                new KeyValuePair<string, Func<string, string>>("kanaxs", targetText =>
                 {
                     var s = Kana.ToHiragana(targetText);
                     s = Kana.ToKatakana(s);
                     return Kana.ToHankakuKana(s);
                 }),
-                new Pair<string, Func<string, string>>("Kanaria", targetText =>
+                new KeyValuePair<string, Func<string, string>>("Kanaria", targetText =>
                 {
                     return UcsString.From(targetText)
                         .Hiragana()
@@ -66,21 +64,21 @@ namespace KanariaBenchmark
         {
             Bench(ExampleText.WAGAHAI, 10, new[]
             {
-                new Pair<string, Func<string, string>>("StrConv", targetText =>
+                new KeyValuePair<string, Func<string, string>>("StrConv", targetText =>
                 {
                     var s = Strings.StrConv(targetText, VbStrConv.Hiragana, 0x411);
                     s = Strings.StrConv(s, VbStrConv.Katakana, 0x411);
                     s = Strings.StrConv(s, VbStrConv.Narrow, 0x411);
                     return Strings.StrConv(s, VbStrConv.Wide, 0x411);
                 }),
-                new Pair<string, Func<string, string>>("kanaxs", targetText =>
+                new KeyValuePair<string, Func<string, string>>("kanaxs", targetText =>
                 {
                     var s = Kana.ToHiragana(targetText);
                     s = Kana.ToKatakana(s);
                     s = Kana.ToHankakuKana(s);
                     return Kana.ToZenkakuKana(s);
                 }),
-                new Pair<string, Func<string, string>>("Kanaria", targetText =>
+                new KeyValuePair<string, Func<string, string>>("Kanaria", targetText =>
                 {
                     return UcsString.From(targetText)
                         .Hiragana()
@@ -97,19 +95,19 @@ namespace KanariaBenchmark
         {
             Bench(ExampleText.WAGAHAI, 10, new[]
             {
-                new Pair<string, Func<string, string>>("StrConv", targetText =>
+                new KeyValuePair<string, Func<string, string>>("StrConv", targetText =>
                 {
                     var s = Strings.StrConv(targetText, VbStrConv.Katakana, 0x411);
                     s = Strings.StrConv(s, VbStrConv.Narrow, 0x411);
                     return Strings.StrConv(s, VbStrConv.Wide, 0x411);
                 }),
-                new Pair<string, Func<string, string>>("kanaxs", targetText =>
+                new KeyValuePair<string, Func<string, string>>("kanaxs", targetText =>
                 {
                     var s = Kana.ToKatakana(targetText);
                     s = Kana.ToHankakuKana(s);
                     return Kana.ToZenkakuKana(s);
                 }),
-                new Pair<string, Func<string, string>>("Kanaria", targetText =>
+                new KeyValuePair<string, Func<string, string>>("Kanaria", targetText =>
                 {
                     return UcsString.From(targetText)
                         .Katakana()
@@ -125,17 +123,17 @@ namespace KanariaBenchmark
         {
             Bench(ExampleText.TRUMP, 10, new[]
             {
-                new Pair<string, Func<string, string>>("StrConv", targetText =>
+                new KeyValuePair<string, Func<string, string>>("StrConv", targetText =>
                 {
                     var s = Strings.StrConv(targetText, VbStrConv.Lowercase, 0x411);
                     return Strings.StrConv(s, VbStrConv.Uppercase, 0x411);
                 }),
-                new Pair<string, Func<string, string>>("dotnet", targetText =>
+                new KeyValuePair<string, Func<string, string>>("dotnet", targetText =>
                 {
                     var s = targetText.ToLower();
                     return s.ToUpper();
                 }),
-                new Pair<string, Func<string, string>>("Kanaria", targetText =>
+                new KeyValuePair<string, Func<string, string>>("Kanaria", targetText =>
                 {
                     return UcsString.From(targetText)
                         .LowerCase()
@@ -150,19 +148,19 @@ namespace KanariaBenchmark
         {
             Bench(ExampleText.TRUMP, 10, new[]
             {
-                new Pair<string, Func<string, string>>("StrConv", targetText =>
+                new KeyValuePair<string, Func<string, string>>("StrConv", targetText =>
                 {
                     var s = Strings.StrConv(targetText, VbStrConv.Wide, 0x411);
                     s = Strings.StrConv(s, VbStrConv.Narrow, 0x411);
                     return s;
                 }),
-                new Pair<string, Func<string, string>>("Kanaxs", targetText =>
+                new KeyValuePair<string, Func<string, string>>("Kanaxs", targetText =>
                 {
                     var s = Kana.ToZenkaku(targetText);
                     s = Kana.ToHankaku(s);
                     return s;
                 }),
-                new Pair<string, Func<string, string>>("Kanaria", targetText =>
+                new KeyValuePair<string, Func<string, string>>("Kanaria", targetText =>
                 {
                     return UcsString.From(targetText)
                         .Wide()
@@ -172,7 +170,7 @@ namespace KanariaBenchmark
             });
         }
 
-        private void Bench(string s, int maxCount, IEnumerable<Pair<string, Func<string, string>>> routines)
+        private void Bench(string s, int maxCount, IEnumerable<KeyValuePair<string, Func<string, string>>> routines)
         {
             //Parallel.ForEach(routines, routine =>
             routines
@@ -183,10 +181,10 @@ namespace KanariaBenchmark
                 Enumerable
                     .Range(0, maxCount)
                     .ToList()
-                    .ForEach(i => routine.Second(s));
+                    .ForEach(i => routine.Value(s));
                 stopWatch.Stop();
 
-                Console.WriteLine($@"{routine.First} : {stopWatch.ElapsedTicks.ToString()}");
+                Console.WriteLine($@"{routine.Key} : {stopWatch.ElapsedTicks.ToString()}");
             });
         }
     }

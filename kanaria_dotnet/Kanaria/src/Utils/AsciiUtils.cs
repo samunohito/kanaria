@@ -10,7 +10,7 @@ namespace Kanaria.Utils
         /// </summary>
         /// <param name="target">判定対象</param>
         /// <returns>該当:true / 非該当:false</returns>
-        [DllImport("kanaria_core.dll", EntryPoint = "is_ascii_for_utf16", CallingConvention = CallingConvention.Cdecl,
+        [DllImport("kanaria.dll", EntryPoint = "is_ascii_for_utf16", CallingConvention = CallingConvention.Cdecl,
             CharSet = CharSet.Unicode)]
         [return:MarshalAs(UnmanagedType.I1)]
         public static extern bool IsAscii(char target);
@@ -20,7 +20,7 @@ namespace Kanaria.Utils
         /// </summary>
         /// <param name="target">判定対象</param>
         /// <returns>該当:true / 非該当:false</returns>
-        [DllImport("kanaria_core.dll", EntryPoint = "is_narrow_ascii_for_utf16",
+        [DllImport("kanaria.dll", EntryPoint = "is_narrow_ascii_for_utf16",
             CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         [return:MarshalAs(UnmanagedType.I1)]
         public static extern bool IsNarrowAscii(char target);
@@ -30,7 +30,7 @@ namespace Kanaria.Utils
         /// </summary>
         /// <param name="target">判定対象</param>
         /// <returns>該当:true / 非該当:false</returns>
-        [DllImport("kanaria_core.dll", EntryPoint = "is_wide_ascii_for_utf16",
+        [DllImport("kanaria.dll", EntryPoint = "is_wide_ascii_for_utf16",
             CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         [return:MarshalAs(UnmanagedType.I1)]
         public static extern bool IsWideAscii(char target);
@@ -40,7 +40,7 @@ namespace Kanaria.Utils
         /// </summary>
         /// <param name="target">判定対象</param>
         /// <returns>該当:true / 非該当:false</returns>
-        [DllImport("kanaria_core.dll", EntryPoint = "is_lower_case_for_utf16",
+        [DllImport("kanaria.dll", EntryPoint = "is_lower_case_for_utf16",
             CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         [return:MarshalAs(UnmanagedType.I1)]
         public static extern bool IsLowerCase(char target);
@@ -50,7 +50,7 @@ namespace Kanaria.Utils
         /// </summary>
         /// <param name="target">判定対象</param>
         /// <returns>該当:true / 非該当:false</returns>
-        [DllImport("kanaria_core.dll", EntryPoint = "is_narrow_lower_case_for_utf16",
+        [DllImport("kanaria.dll", EntryPoint = "is_narrow_lower_case_for_utf16",
             CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         [return:MarshalAs(UnmanagedType.I1)]
         public static extern bool IsNarrowLowerCase(char target);
@@ -60,7 +60,7 @@ namespace Kanaria.Utils
         /// </summary>
         /// <param name="target">判定対象</param>
         /// <returns>該当:true / 非該当:false</returns>
-        [DllImport("kanaria_core.dll", EntryPoint = "is_wide_lower_case_for_utf16",
+        [DllImport("kanaria.dll", EntryPoint = "is_wide_lower_case_for_utf16",
             CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         [return:MarshalAs(UnmanagedType.I1)]
         public static extern bool IsWideLowerCase(char target);
@@ -70,7 +70,7 @@ namespace Kanaria.Utils
         /// </summary>
         /// <param name="target">判定対象</param>
         /// <returns>該当:true / 非該当:false</returns>
-        [DllImport("kanaria_core.dll", EntryPoint = "is_upper_case_for_utf16",
+        [DllImport("kanaria.dll", EntryPoint = "is_upper_case_for_utf16",
             CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         [return:MarshalAs(UnmanagedType.I1)]
         public static extern bool IsUpperCase(char target);
@@ -80,7 +80,7 @@ namespace Kanaria.Utils
         /// </summary>
         /// <param name="target">判定対象</param>
         /// <returns>該当:true / 非該当:false</returns>
-        [DllImport("kanaria_core.dll", EntryPoint = "is_narrow_upper_case_for_utf16",
+        [DllImport("kanaria.dll", EntryPoint = "is_narrow_upper_case_for_utf16",
             CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         [return:MarshalAs(UnmanagedType.I1)]
         public static extern bool IsNarrowUpperCase(char target);
@@ -90,7 +90,7 @@ namespace Kanaria.Utils
         /// </summary>
         /// <param name="target">判定対象</param>
         /// <returns>該当:true / 非該当:false</returns>
-        [DllImport("kanaria_core.dll", EntryPoint = "is_wide_upper_case_for_utf16",
+        [DllImport("kanaria.dll", EntryPoint = "is_wide_upper_case_for_utf16",
             CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         [return:MarshalAs(UnmanagedType.I1)]
         public static extern bool IsWideUpperCase(char target);
@@ -101,7 +101,7 @@ namespace Kanaria.Utils
         /// </summary>
         /// <param name="target">判定対象</param>
         /// <returns>該当:true / 非該当:false</returns>
-        [DllImport("kanaria_core.dll", EntryPoint = "is_ascii_symbol_for_utf16",
+        [DllImport("kanaria.dll", EntryPoint = "is_ascii_symbol_for_utf16",
             CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         [return:MarshalAs(UnmanagedType.I1)]
         public static extern bool IsAsciiSymbol(char target);
@@ -112,7 +112,7 @@ namespace Kanaria.Utils
         /// </summary>
         /// <param name="target">判定対象</param>
         /// <returns>該当:true / 非該当:false</returns>
-        [DllImport("kanaria_core.dll", EntryPoint = "is_narrow_ascii_symbol_for_utf16",
+        [DllImport("kanaria.dll", EntryPoint = "is_narrow_ascii_symbol_for_utf16",
             CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         [return:MarshalAs(UnmanagedType.I1)]
         public static extern bool IsNarrowAsciiSymbol(char target);
@@ -122,7 +122,7 @@ namespace Kanaria.Utils
         /// </summary>
         /// <param name="target">判定対象</param>
         /// <returns>該当:true / 非該当:false</returns>
-        [DllImport("kanaria_core.dll", EntryPoint = "is_wide_ascii_symbol_for_utf16",
+        [DllImport("kanaria.dll", EntryPoint = "is_wide_ascii_symbol_for_utf16",
             CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         [return:MarshalAs(UnmanagedType.I1)]
         public static extern bool IsWideAsciiSymbol(char target);
@@ -133,7 +133,7 @@ namespace Kanaria.Utils
         /// </summary>
         /// <param name="target">判定対象</param>
         /// <returns>該当:true / 非該当:false</returns>
-        [DllImport("kanaria_core.dll", EntryPoint = "is_number_for_utf16", CallingConvention = CallingConvention.Cdecl,
+        [DllImport("kanaria.dll", EntryPoint = "is_number_for_utf16", CallingConvention = CallingConvention.Cdecl,
             CharSet = CharSet.Unicode)]
         [return:MarshalAs(UnmanagedType.I1)]
         public static extern bool IsNumber(char target);
@@ -143,7 +143,7 @@ namespace Kanaria.Utils
         /// </summary>
         /// <param name="target">判定対象</param>
         /// <returns>該当:true / 非該当:false</returns>
-        [DllImport("kanaria_core.dll", EntryPoint = "is_narrow_number_for_utf16",
+        [DllImport("kanaria.dll", EntryPoint = "is_narrow_number_for_utf16",
             CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         [return:MarshalAs(UnmanagedType.I1)]
         public static extern bool IsNarrowNumber(char target);
@@ -153,7 +153,7 @@ namespace Kanaria.Utils
         /// </summary>
         /// <param name="target">判定対象</param>
         /// <returns>該当:true / 非該当:false</returns>
-        [DllImport("kanaria_core.dll", EntryPoint = "is_wide_number_for_utf16",
+        [DllImport("kanaria.dll", EntryPoint = "is_wide_number_for_utf16",
             CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         [return:MarshalAs(UnmanagedType.I1)]
         public static extern bool IsWideNumber(char target);
@@ -165,7 +165,7 @@ namespace Kanaria.Utils
         /// </summary>
         /// <param name="target">対象文字</param>
         /// <returns>変換後文字</returns>
-        [DllImport("kanaria_core.dll", EntryPoint = "convert_to_upper_case_for_utf16",
+        [DllImport("kanaria.dll", EntryPoint = "convert_to_upper_case_for_utf16",
             CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         [return:MarshalAs(UnmanagedType.U2)]
         public static extern char ConvertToUpperCase(char target);
@@ -176,7 +176,7 @@ namespace Kanaria.Utils
         /// </summary>
         /// <param name="target">対象文字</param>
         /// <returns>変換後文字</returns>
-        [DllImport("kanaria_core.dll", EntryPoint = "convert_to_lower_case_for_utf16",
+        [DllImport("kanaria.dll", EntryPoint = "convert_to_lower_case_for_utf16",
             CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         [return:MarshalAs(UnmanagedType.U2)]
         public static extern char ConvertToLowerCase(char target);

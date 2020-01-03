@@ -5,7 +5,7 @@
  * http://wiki.dobon.net/index.php?free%2FkanaxsCSharp%2Flicense
  */
 
-namespace KanariaBenchmark.External
+namespace KanariaTest.External
 {
     /// <summary>
     /// ひらがなとカタカナ、半角と全角の文字変換を行うメソッドを提供します。
