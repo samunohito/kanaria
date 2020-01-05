@@ -2,8 +2,6 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel>
-      <module name="kanaria.kanaria_jvm.main" target="11" />
-      <module name="kanaria.kanaria_jvm.test" target="11" />
       <module name="kanaria_jvm_main" target="1.8" />
       <module name="kanaria_jvm_test" target="1.8" />
       <module name="kanaria_main" target="1.8" />

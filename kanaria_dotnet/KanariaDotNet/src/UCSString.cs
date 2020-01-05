@@ -9,7 +9,7 @@ namespace Kanaria
     public class UcsString
     {
         private readonly string _target;
-        private readonly List<ConvertType> _convertTypes;
+        private readonly List<RequestParameter> _convertTypes;
 
         /// <summary>
         /// コンストラクタ
@@ -18,7 +18,7 @@ namespace Kanaria
         private UcsString(string target)
         {
             _target = target;
-            _convertTypes = new List<ConvertType>();
+            _convertTypes = new List<RequestParameter>();
         }
 
         /// <summary>
@@ -47,7 +47,7 @@ namespace Kanaria
         /// <returns>このインスタンス。ToString()の呼び出しで変換処理を行います。</returns>
         public UcsString UpperCase()
         {
-            _convertTypes.Add(ConvertType.UpperCase);
+            _convertTypes.Add(new RequestParameter(RequestType.UpperCase));
             return this;
         }
 
@@ -57,7 +57,7 @@ namespace Kanaria
         /// <returns>このインスタンス。ToString()の呼び出しで変換処理を行います。</returns>
         public UcsString LowerCase()
         {
-            _convertTypes.Add(ConvertType.LowerCase);
+            _convertTypes.Add(new RequestParameter(RequestType.LowerCase));
             return this;
         }
 
@@ -67,7 +67,7 @@ namespace Kanaria
         /// <returns>このインスタンス。ToString()の呼び出しで変換処理を行います。</returns>
         public UcsString Katakana()
         {
-            _convertTypes.Add(ConvertType.Katakana);
+            _convertTypes.Add(new RequestParameter(RequestType.Katakana));
             return this;
         }
 
@@ -77,7 +77,7 @@ namespace Kanaria
         /// <returns>このインスタンス。ToString()の呼び出しで変換処理を行います。</returns>
         public UcsString Hiragana()
         {
-            _convertTypes.Add(ConvertType.Hiragana);
+            _convertTypes.Add(new RequestParameter(RequestType.Hiragana));
             return this;
         }
 
@@ -85,9 +85,9 @@ namespace Kanaria
         /// 文字列を全角に変換するように設定します。
         /// </summary>
         /// <returns>このインスタンス。ToString()の呼び出しで変換処理を行います。</returns>
-        public UcsString Wide()
+        public UcsString Wide(ConvertTarget target = ConvertTarget.All)
         {
-            _convertTypes.Add(ConvertType.Wide);
+            _convertTypes.Add(new RequestParameter(RequestType.Wide, target));
             return this;
         }
 
@@ -95,9 +95,9 @@ namespace Kanaria
         /// 文字列を半角に変換するように設定します。
         /// </summary>
         /// <returns>このインスタンス。ToString()の呼び出しで変換処理を行います。</returns>
-        public UcsString Narrow()
+        public UcsString Narrow(ConvertTarget target = ConvertTarget.All)
         {
-            _convertTypes.Add(ConvertType.Narrow);
+            _convertTypes.Add(new RequestParameter(RequestType.Narrow, target));
             return this;
         }
 
@@ -111,32 +111,35 @@ namespace Kanaria
         {
             var tmpBuffer = _target;
 
-            _convertTypes.ForEach(type =>
+            _convertTypes.ForEach(param =>
             {
+                var type = param.Type;
+                var target = param.ConvertTarget;
+
                 // 半角文字の場合、濁音等で文字数が2文字に増えるケースもあるので2倍長さを確保しておく
-                var resultBufferSize = (type == ConvertType.Narrow) ? tmpBuffer.Length * 2 : tmpBuffer.Length;
+                var resultBufferSize = (type == RequestType.Narrow) ? tmpBuffer.Length * 2 : tmpBuffer.Length;
                 // 終端文字考慮で1つ分長くする。
                 var sb = new StringBuilder(resultBufferSize + 1);
 
                 switch (type)
                 {
-                    case ConvertType.UpperCase:
+                    case RequestType.UpperCase:
                         ToUpperCase(tmpBuffer, (uint) tmpBuffer.Length, sb, (uint) sb.Capacity);
                         break;
-                    case ConvertType.LowerCase:
+                    case RequestType.LowerCase:
                         ToLowerCase(tmpBuffer, (uint) tmpBuffer.Length, sb, (uint) sb.Capacity);
                         break;
-                    case ConvertType.Hiragana:
+                    case RequestType.Hiragana:
                         ToHiragana(tmpBuffer, (uint) tmpBuffer.Length, sb, (uint) sb.Capacity);
                         break;
-                    case ConvertType.Katakana:
+                    case RequestType.Katakana:
                         ToKatakana(tmpBuffer, (uint) tmpBuffer.Length, sb, (uint) sb.Capacity);
                         break;
-                    case ConvertType.Wide:
-                        ToWide(tmpBuffer, (uint) tmpBuffer.Length, sb, (uint) sb.Capacity);
+                    case RequestType.Wide:
+                        ToWide(tmpBuffer, (uint) tmpBuffer.Length, sb, (uint) sb.Capacity, (uint) target);
                         break;
-                    case ConvertType.Narrow:
-                        ToNarrow(tmpBuffer, (uint) tmpBuffer.Length, sb, (uint) sb.Capacity);
+                    case RequestType.Narrow:
+                        ToNarrow(tmpBuffer, (uint) tmpBuffer.Length, sb, (uint) sb.Capacity, (uint) target);
                         break;
                     default:
                         throw new ArgumentOutOfRangeException(nameof(type), type, null);
@@ -166,13 +169,13 @@ namespace Kanaria
 
         [DllImport("kanaria.dll", EntryPoint = "to_wide_for_utf16",
             CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
-        private static extern uint ToWide(string target, uint targetSize, StringBuilder result, uint resultSize);
+        private static extern uint ToWide(string target, uint targetSize, StringBuilder result, uint resultSize, uint convertTarget);
 
         [DllImport("kanaria.dll", EntryPoint = "to_narrow_for_utf16",
             CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
-        private static extern uint ToNarrow(string target, uint targetSize, StringBuilder result, uint resultSize);
+        private static extern uint ToNarrow(string target, uint targetSize, StringBuilder result, uint resultSize, uint convertTarget);
 
-        private enum ConvertType
+        private enum RequestType
         {
             UpperCase,
             LowerCase,
@@ -180,6 +183,23 @@ namespace Kanaria
             Hiragana,
             Wide,
             Narrow
+        }
+        
+        private class RequestParameter
+        {
+            public RequestType Type { get; set; }
+            public ConvertTarget ConvertTarget { get; set; }
+            public RequestParameter(RequestType type, ConvertTarget convertTarget)
+            {
+                Type = type;
+                ConvertTarget = convertTarget;
+            }
+            
+            public RequestParameter(RequestType type)
+            {
+                Type = type;
+                ConvertTarget = ConvertTarget.All;
+            }
         }
     }
 }

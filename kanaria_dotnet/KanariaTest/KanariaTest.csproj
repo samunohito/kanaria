@@ -8,7 +8,7 @@
 
         <Nullable>enable</Nullable>
 
-        <TargetFramework>net461</TargetFramework>
+        <TargetFramework>net472</TargetFramework>
     </PropertyGroup>
 
     <ItemGroup>
@@ -18,11 +18,13 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Kanaria\Kanaria.csproj" />
+      <Reference Include="Microsoft.VisualBasic" Condition="'$(TargetFramework)' == 'net461'" />
+      <Reference Include="Microsoft.VisualBasic" />
+      <Reference Include="Microsoft.VisualBasic" Condition="'$(TargetFramework)' == 'net40'" />
     </ItemGroup>
 
     <ItemGroup>
-      <Reference Include="Microsoft.VisualBasic" Condition="'$(TargetFramework)' == 'net461'" />
+      <ProjectReference Include="..\KanariaDotNet\KanariaDotNet.csproj" />
     </ItemGroup>
 
 </Project>

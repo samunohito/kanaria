@@ -1,4 +1,3 @@
-using System;
 using Kanaria;
 using Kanaria.Utils;
 using NUnit.Framework;
@@ -160,6 +159,16 @@ namespace KanariaTest
             Assert.AreEqual('ｶ', WidthUtils.ConvertToNarrow('ガ', out second));
             Assert.AreNotEqual((char) 0, second);
             Assert.AreNotEqual('ﾟ', second);
+        }
+        
+        [Test]
+            public void ExampleSentence9() {
+            var source = "吾輩は😺猫である😺";
+            var expect = "吾輩ﾊ😺猫ﾃﾞｱﾙ😺";
+            var expect2 = "吾輩ハ😺猫デアル😺";
+
+            Assert.AreEqual(expect, UcsString.From(source).Katakana().Narrow(ConvertTarget.All).ToString());
+            Assert.AreEqual(expect2, UcsString.From(source).Katakana().Narrow(ConvertTarget.Number | ConvertTarget.Symbol | ConvertTarget.Alphabet).ToString());
         }
     }
 }

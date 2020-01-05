@@ -24,7 +24,7 @@ namespace KanariaTest
                 {
                     return Kana.ToKatakana(targetText);
                 }),
-                new KeyValuePair<string, Func<string, string>>("Kanaria", targetText =>
+                new KeyValuePair<string, Func<string, string>>("KanariaDotNet", targetText =>
                 {
                     return UcsString.From(targetText).Katakana().ToString();
                 }),
@@ -48,7 +48,7 @@ namespace KanariaTest
                     s = Kana.ToKatakana(s);
                     return Kana.ToHankakuKana(s);
                 }),
-                new KeyValuePair<string, Func<string, string>>("Kanaria", targetText =>
+                new KeyValuePair<string, Func<string, string>>("KanariaDotNet", targetText =>
                 {
                     return UcsString.From(targetText)
                         .Hiragana()
@@ -78,7 +78,7 @@ namespace KanariaTest
                     s = Kana.ToHankakuKana(s);
                     return Kana.ToZenkakuKana(s);
                 }),
-                new KeyValuePair<string, Func<string, string>>("Kanaria", targetText =>
+                new KeyValuePair<string, Func<string, string>>("KanariaDotNet", targetText =>
                 {
                     return UcsString.From(targetText)
                         .Hiragana()
@@ -107,7 +107,7 @@ namespace KanariaTest
                     s = Kana.ToHankakuKana(s);
                     return Kana.ToZenkakuKana(s);
                 }),
-                new KeyValuePair<string, Func<string, string>>("Kanaria", targetText =>
+                new KeyValuePair<string, Func<string, string>>("KanariaDotNet", targetText =>
                 {
                     return UcsString.From(targetText)
                         .Katakana()
@@ -133,7 +133,7 @@ namespace KanariaTest
                     var s = targetText.ToLower();
                     return s.ToUpper();
                 }),
-                new KeyValuePair<string, Func<string, string>>("Kanaria", targetText =>
+                new KeyValuePair<string, Func<string, string>>("KanariaDotNet", targetText =>
                 {
                     return UcsString.From(targetText)
                         .LowerCase()
@@ -160,7 +160,7 @@ namespace KanariaTest
                     s = Kana.ToHankaku(s);
                     return s;
                 }),
-                new KeyValuePair<string, Func<string, string>>("Kanaria", targetText =>
+                new KeyValuePair<string, Func<string, string>>("KanariaDotNet", targetText =>
                 {
                     return UcsString.From(targetText)
                         .Wide()
