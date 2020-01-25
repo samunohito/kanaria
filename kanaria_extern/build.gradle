@@ -1,6 +1,0 @@
-rustic {
-    projectSettings {
-        projectLocation "$projectDir"
-        jobs 4
-    }
-}
