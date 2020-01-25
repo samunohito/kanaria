@@ -1,38 +1,36 @@
 package com.kanaria
 
-import java.lang.StringBuilder
-
 class UcsString private constructor(arg: String?) {
     private var target: String = arg ?: ""
-    private val requests: ArrayList<RequestType> = ArrayList()
+    private val requests: ArrayList<RequestParameter> = ArrayList()
 
     fun upperCase(): UcsString {
-        requests.add(RequestType.UpperCase)
+        requests.add(RequestParameter(RequestType.UpperCase, CONVERT_TARGET_ALL))
         return this
     }
 
     fun lowerCase(): UcsString {
-        requests.add(RequestType.LowerCase)
+        requests.add(RequestParameter(RequestType.LowerCase, CONVERT_TARGET_ALL))
         return this
     }
 
     fun hiragana(): UcsString {
-        requests.add(RequestType.Hiragana)
+        requests.add(RequestParameter(RequestType.Hiragana, CONVERT_TARGET_ALL))
         return this
     }
 
     fun katakana(): UcsString {
-        requests.add(RequestType.Katakana)
+        requests.add(RequestParameter(RequestType.Katakana, CONVERT_TARGET_ALL))
         return this
     }
 
-    fun wide(): UcsString {
-        requests.add(RequestType.Wide)
+    fun wide(target: Int = CONVERT_TARGET_ALL): UcsString {
+        requests.add(RequestParameter(RequestType.Wide, target))
         return this
     }
 
-    fun narrow(): UcsString {
-        requests.add(RequestType.Narrow)
+    fun narrow(target: Int = CONVERT_TARGET_ALL): UcsString {
+        requests.add(RequestParameter(RequestType.Narrow, target))
         return this
     }
 
@@ -42,27 +40,29 @@ class UcsString private constructor(arg: String?) {
         var tmpBuffer = target
 
         requests.forEach {
-            val resultLength = if (it == RequestType.Narrow) tmpBuffer.length * 2 else tmpBuffer.length
+            val convertType = it.type;
+            val convertTarget= it.convertTarget;
+            val resultLength = if (convertType == RequestType.Narrow) tmpBuffer.length * 2 else tmpBuffer.length
             val resultBuffer = CharArray(resultLength + 1)
 
-            val realLength = when (it) {
+            val realLength = when (convertType) {
                 RequestType.UpperCase -> {
-                    toUpperCaseNative(tmpBuffer.toCharArray(), tmpBuffer.length, resultBuffer)
+                    toUpperCaseNative(tmpBuffer.toCharArray(), tmpBuffer.length, resultBuffer, resultLength)
                 }
                 RequestType.LowerCase -> {
-                    toLowerCaseNative(tmpBuffer.toCharArray(), tmpBuffer.length, resultBuffer)
+                    toLowerCaseNative(tmpBuffer.toCharArray(), tmpBuffer.length, resultBuffer, resultLength)
                 }
                 RequestType.Hiragana -> {
-                    toHiraganaNative(tmpBuffer.toCharArray(), tmpBuffer.length, resultBuffer)
+                    toHiraganaNative(tmpBuffer.toCharArray(), tmpBuffer.length, resultBuffer, resultLength)
                 }
                 RequestType.Katakana -> {
-                    toKatakanaNative(tmpBuffer.toCharArray(), tmpBuffer.length, resultBuffer)
+                    toKatakanaNative(tmpBuffer.toCharArray(), tmpBuffer.length, resultBuffer, resultLength)
                 }
                 RequestType.Wide -> {
-                    toWideNative(tmpBuffer.toCharArray(), tmpBuffer.length, resultBuffer)
+                    toWideNative(tmpBuffer.toCharArray(), tmpBuffer.length, resultBuffer, resultLength, convertTarget)
                 }
                 RequestType.Narrow -> {
-                    toNarrowNative(tmpBuffer.toCharArray(), tmpBuffer.length, resultBuffer)
+                    toNarrowNative(tmpBuffer.toCharArray(), tmpBuffer.length, resultBuffer, resultLength, convertTarget)
                 }
             }
 
@@ -72,14 +72,36 @@ class UcsString private constructor(arg: String?) {
         return tmpBuffer
     }
 
-    private external fun toUpperCaseNative(target: CharArray, targetLength: Int, result: CharArray): Int
-    private external fun toLowerCaseNative(target: CharArray, targetLength: Int, result: CharArray): Int
-    private external fun toWideNative(target: CharArray, targetLength: Int, result: CharArray): Int
-    private external fun toNarrowNative(target: CharArray, targetLength: Int, result: CharArray): Int
-    private external fun toHiraganaNative(target: CharArray, targetLength: Int, result: CharArray): Int
-    private external fun toKatakanaNative(target: CharArray, targetLength: Int, result: CharArray): Int
+    private external fun convertNative(src: CharArray, srcLength: Int, dst: CharArray, dstLength: Int, convertType: Int, convertTarget: Int): Int
+    private external fun toUpperCaseNative(src: CharArray, srcLength: Int, dst: CharArray, dstLength: Int): Int
+    private external fun toLowerCaseNative(src: CharArray, srcLength: Int, dst: CharArray, dstLength: Int): Int
+    private external fun toHiraganaNative(src: CharArray, srcLength: Int, dst: CharArray, dstLength: Int): Int
+    private external fun toKatakanaNative(src: CharArray, srcLength: Int, dst: CharArray, dstLength: Int): Int
+    private external fun toWideNative(src: CharArray, srcLength: Int, dst: CharArray, dstLength: Int, convertTarget: Int): Int
+    private external fun toNarrowNative(src: CharArray, srcLength: Int, dst: CharArray, dstLength: Int, convertTarget: Int): Int
 
     companion object {
+        /**
+         * 半角・全角の変換対象として数値を設定する際のビットフラグです。
+         */
+        const val CONVERT_TARGET_NUMBER: Int = 0b00000001;
+        /**
+         * 半角・全角の変換対象としてアルファベットを設定する際のビットフラグです。
+         */
+        const val CONVERT_TARGET_ALPHABET: Int = 0b00000010;
+        /**
+         * 半角・全角の変換対象として記号を設定する際のビットフラグです。
+         */
+        const val CONVERT_TARGET_SYMBOL: Int = 0b00000100;
+        /**
+         * 半角・全角の変換対象としてカタカナを設定する際のビットフラグです。
+         */
+        const val CONVERT_TARGET_KATAKANA: Int = 0b00001000;
+        /**
+         * 半角・全角の変換が可能なものはすべて変換します。
+         */
+        const val CONVERT_TARGET_ALL: Int = (CONVERT_TARGET_NUMBER or CONVERT_TARGET_ALPHABET or CONVERT_TARGET_SYMBOL or CONVERT_TARGET_KATAKANA);
+
         fun from(target: String?): UcsString {
             return UcsString(target)
         }
@@ -88,4 +110,6 @@ class UcsString private constructor(arg: String?) {
     private enum class RequestType {
         UpperCase, LowerCase, Hiragana, Katakana, Wide, Narrow
     }
+
+    private class RequestParameter(val type: RequestType, val convertTarget: Int);
 }

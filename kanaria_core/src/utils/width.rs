@@ -1,6 +1,16 @@
 use crate::constants::*;
 use crate::UCSChar;
 
+bitflags! {
+    pub struct ConvertTarget: u32 {
+        const NUMBER = CONVERT_TARGET_NUMBER;
+        const ALPHABET = CONVERT_TARGET_ALPHABET;
+        const SYMBOL = CONVERT_TARGET_SYMBOL;
+        const KATAKANA = CONVERT_TARGET_KATAKANA;
+        const ALL = (Self::NUMBER.bits | Self::ALPHABET.bits | Self::SYMBOL.bits | Self::KATAKANA.bits) as u32;
+    }
+}
+
 pub struct WidthUtils;
 
 impl WidthUtils {

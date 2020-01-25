@@ -21,7 +21,6 @@ pub trait UCSChar: Debug + Sized + Default + Copy + Ord + Eq {
     /// let false_case = 'a'.is_in_range(NARROW_ASCII_LATIN_UPPER_CASE_A, NARROW_ASCII_LATIN_UPPER_CASE_Z);
     /// assert_eq!(false_case, false);
     /// ```
-    #[inline]
     fn is_in_range(&self, low: u32, high: u32) -> bool;
 
     /// searchの中に対象を含むかどうかを判定します。
@@ -38,7 +37,6 @@ pub trait UCSChar: Debug + Sized + Default + Copy + Ord + Eq {
     /// let false_case = 'D'.is_contains(&[NARROW_ASCII_LATIN_UPPER_CASE_A, NARROW_ASCII_LATIN_UPPER_CASE_B, NARROW_ASCII_LATIN_UPPER_CASE_C]);
     /// assert_eq!(false_case, false);
     /// ```
-    #[inline]
     fn is_contains(&self, search: &[u32]) -> bool;
 
     /// targetと対象が同値であるかどうかを判定します。
@@ -55,7 +53,6 @@ pub trait UCSChar: Debug + Sized + Default + Copy + Ord + Eq {
     /// let false_case = 'A'.is_match(NARROW_ASCII_LATIN_LOWER_CASE_A);
     /// assert_eq!(false_case, false);
     /// ```
-    #[inline]
     fn is_match(&self, target: u32) -> bool;
 
     /// サロゲートペアであるかどうかを判定します。
@@ -74,7 +71,6 @@ pub trait UCSChar: Debug + Sized + Default + Copy + Ord + Eq {
     /// // ひらがなの「あ」
     /// assert_eq!(0x3042u16.is_surrogate(), false);
     /// ```
-    #[inline]
     fn is_surrogate(&self) -> bool;
 
     /// 上位サロゲートであるかどうかを判定します。
@@ -93,7 +89,6 @@ pub trait UCSChar: Debug + Sized + Default + Copy + Ord + Eq {
     /// // ひらがなの「あ」
     /// assert_eq!(0x3042u16.is_high_surrogate(), false);
     /// ```
-    #[inline]
     fn is_high_surrogate(&self) -> bool;
 
     /// 下位サロゲートであるかどうかを判定します。
@@ -112,7 +107,6 @@ pub trait UCSChar: Debug + Sized + Default + Copy + Ord + Eq {
     /// // ひらがなの「あ」
     /// assert_eq!(0x3042u16.is_low_surrogate(), false);
     /// ```
-    #[inline]
     fn is_low_surrogate(&self) -> bool;
 
     /// null文字であるかどうかを判定します。
@@ -125,7 +119,6 @@ pub trait UCSChar: Debug + Sized + Default + Copy + Ord + Eq {
     /// assert_eq!(char::NULL.is_null(), true);
     /// assert_eq!('a'.is_null(), false);
     /// ```
-    #[inline]
     fn is_null(&self) -> bool;
 
     /// 対象にvalueの値を加算した文字を取得します。
@@ -139,7 +132,6 @@ pub trait UCSChar: Debug + Sized + Default + Copy + Ord + Eq {
     /// let ret = 'あ'.addition(0x0060);
     /// assert_eq!(ret, 'ア');
     /// ```
-    #[inline]
     fn addition(&self, value: u32) -> Self;
 
     /// 対象からvalueの値を減算した文字を取得します。
@@ -153,7 +145,6 @@ pub trait UCSChar: Debug + Sized + Default + Copy + Ord + Eq {
     /// let ret = 'ア'.subtraction(0x0060);
     /// assert_eq!(ret, 'あ');
     /// ```
-    #[inline]
     fn subtraction(&self, value: u32) -> Self;
 
     /// 値をUnicodeスカラ値に変換します。
@@ -167,7 +158,6 @@ pub trait UCSChar: Debug + Sized + Default + Copy + Ord + Eq {
     /// let ret = 'A'.as_scalar();
     /// assert_eq!(ret, NARROW_ASCII_LATIN_UPPER_CASE_A);
     /// ```
-    #[inline]
     fn as_scalar(&self) -> u32;
 
     /// Unicodeスカラ値から値を取り込みます。
@@ -181,7 +171,6 @@ pub trait UCSChar: Debug + Sized + Default + Copy + Ord + Eq {
     /// let ret = char::from_scalar(NARROW_ASCII_LATIN_UPPER_CASE_A);
     /// assert_eq!(ret, 'A');
     /// ```
-    #[inline]
     fn from_scalar<T>(value: T) -> Self where T: UCSChar;
 }
 

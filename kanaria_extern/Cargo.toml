@@ -1,14 +1,13 @@
 [package]
-name = "kanaria_jni"
+name = "kanaria_extern"
 version = "0.1.0"
 authors = ["osamu <46447427+sam-osamu@users.noreply.github.com>"]
 edition = "2018"
 
 [dependencies]
-kanaria = { path = "../../../../kanaria_core" }
-jni = "0.14.0"
+kanaria = { path = "../kanaria_core" }
 
 [lib]
-name = "kanaria_jni"
+name = "kanaria"
 path = "src/lib.rs"
-crate-type = ["cdylib"]
+crate-type = ["dylib"]

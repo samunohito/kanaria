@@ -1,0 +1,1 @@
+include("kanaria_core", "kanaria_extern", "kanaria_dotnet", "kanaria_jvm")
