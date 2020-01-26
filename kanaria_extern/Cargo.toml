@@ -10,4 +10,4 @@ kanaria = { path = "../kanaria_core" }
 [lib]
 name = "kanaria"
 path = "src/lib.rs"
-crate-type = ["dylib"]
+crate-type = ["cdylib"]

@@ -2,7 +2,7 @@ import java.nio.file.Files
 import java.nio.file.Paths
 
 plugins {
-    id("com.osm.gradle.plugins.rustic") version "0.2.0"
+    id("com.osm.gradle.plugins.rustic") version "0.2.6"
 }
 
 rustic {

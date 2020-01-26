@@ -3,6 +3,7 @@ package com.kanaria
 import com.kanaria.exception.NotLoadingJniException
 import com.kanaria.exception.UnsupportedPlatformException
 import org.dom4j.Element
+import org.dom4j.Node
 import org.dom4j.io.SAXReader
 import java.io.File
 
@@ -63,9 +64,7 @@ object KanariaLoader {
         val os = getFamily()
 
         val selectOs = documents.selectNodes("/platformMapping/os")
-                .asSequence()
-                .filter { it is Element }
-                .map { it as Element }
+                .asNodeSequence()
                 .filter {
                     it.attributeValue("name-prefix")
                             ?.split("|")
@@ -74,9 +73,7 @@ object KanariaLoader {
                 .firstOrNull() ?: throw UnsupportedPlatformException(os, arch)
 
         val selectArch = selectOs.selectNodes("./arch")
-                .asSequence()
-                .filter { it is Element }
-                .map { it as Element }
+                .asNodeSequence()
                 .filter {
                     it.attributeValue("type")
                             ?.split("|")
@@ -85,17 +82,13 @@ object KanariaLoader {
                 .firstOrNull() ?: throw UnsupportedPlatformException(os, arch)
 
         val selectPlatforms = selectArch.selectNodes("./platform")
-                .asSequence()
-                .filter { it is Element }
-                .map { it as Element }
+                .asNodeSequence()
                 .toList()
 
         val targetPlatform = selectPlatforms
                 .find { platform ->
                     platform.selectNodes("./java-system-properties")
-                            .asSequence()
-                            .filter { it is Element }
-                            .map { it as Element }
+                            .asNodeSequence()
                             .filter { it.attribute("key") != null && it.attribute("value") != null }
                             .all { System.getProperty(it.attributeValue("key")) == it.attributeValue("value") }
                 }
@@ -148,4 +141,8 @@ object KanariaLoader {
             else -> ""
         }
     }
+
+    private fun List<Node>.asNodeSequence() = this.asSequence()
+            .filter { it is Element }
+            .map { it as Element }
 }

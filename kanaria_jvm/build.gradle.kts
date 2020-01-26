@@ -6,7 +6,7 @@ plugins {
     `kotlin-dsl`
     id("org.jetbrains.dokka") version "0.10.0"
     id("com.jfrog.bintray") version "1.8.4"
-    id("com.osm.gradle.plugins.rustic") version "0.2.0"
+    id("com.osm.gradle.plugins.rustic") version "0.2.6"
 }
 
 val GITHUB_URL = "https://github.com/sam-osamu/kanaria"
