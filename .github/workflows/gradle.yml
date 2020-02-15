@@ -14,7 +14,7 @@ jobs:
       with:
         java-version: 11
     - name: Set up Rust
-      run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+      uses: actions-rs/cargo@v1.0.1
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Build with Gradle
