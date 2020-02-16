@@ -6,7 +6,7 @@ plugins {
     `kotlin-dsl`
     id("org.jetbrains.dokka") version "0.10.0"
     id("com.jfrog.bintray") version "1.8.4"
-    id("com.osm.gradle.plugins.rustic") version "0.2.6"
+    id("com.osm.gradle.plugins.rustic") version "0.2.7"
 }
 
 val GITHUB_URL = "https://github.com/sam-osamu/kanaria"
@@ -105,6 +105,7 @@ tasks.getByName("install", Upload::class) {
     }
 }
 
+val androidNdkPath = "$rootDir/libs/android-ndk-r20b/toolchains/llvm/prebuilt/linux-x86_64/bin"
 rustic {
     projectSettings.projectLocation("$projectDir/src/main/rust")
     defaultConfig.defaultOptions.apply {
@@ -197,8 +198,8 @@ rustic {
 
         create("i686-linux-android") {
             environments(mapOf(
-                    "AR" to "/usr/local/lib/android-ndk-r20b/toolchains/llvm/prebuilt/linux-x86_64/bin/i686-linux-android-ar",
-                    "CC" to "/usr/local/lib/android-ndk-r20b/toolchains/llvm/prebuilt/linux-x86_64/bin/i686-linux-android26-clang"
+                    "AR" to "$androidNdkPath/i686-linux-android-ar",
+                    "CC" to "$androidNdkPath/i686-linux-android26-clang"
             ))
             defaultOptions.apply {
                 target("i686-linux-android")
@@ -207,8 +208,8 @@ rustic {
 
         create("x86_64-linux-android") {
             environments(mapOf(
-                    "AR" to "/usr/local/lib/android-ndk-r20b/toolchains/llvm/prebuilt/linux-x86_64/bin/x86_64-linux-android-ar",
-                    "CC" to "/usr/local/lib/android-ndk-r20b/toolchains/llvm/prebuilt/linux-x86_64/bin/x86_64-linux-android26-clang"
+                    "AR" to "$androidNdkPath/x86_64-linux-android-ar",
+                    "CC" to "$androidNdkPath/x86_64-linux-android26-clang"
             ))
             defaultOptions.apply {
                 target("x86_64-linux-android")
@@ -217,8 +218,8 @@ rustic {
 
         create("arm-linux-androideabi") {
             environments(mapOf(
-                    "AR" to "/usr/local/lib/android-ndk-r20b/toolchains/llvm/prebuilt/linux-x86_64/bin/arm-linux-androideabi-ar",
-                    "CC" to "/usr/local/lib/android-ndk-r20b/toolchains/llvm/prebuilt/linux-x86_64/bin/armv7a-linux-androideabi26-clang"
+                    "AR" to "$androidNdkPath/arm-linux-androideabi-ar",
+                    "CC" to "$androidNdkPath/armv7a-linux-androideabi26-clang"
             ))
             defaultOptions.apply {
                 target("arm-linux-androideabi")
@@ -227,8 +228,8 @@ rustic {
 
         create("aarch64-linux-android") {
             environments(mapOf(
-                    "AR" to "/usr/local/lib/android-ndk-r20b/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android-ar",
-                    "CC" to "/usr/local/lib/android-ndk-r20b/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android26-clang"
+                    "AR" to "$androidNdkPath/aarch64-linux-android-ar",
+                    "CC" to "$androidNdkPath/aarch64-linux-android26-clang"
             ))
             defaultOptions.apply {
                 target("aarch64-linux-android")

@@ -1,5 +1,5 @@
 plugins {
-    id("com.osm.gradle.plugins.rustic") version "0.2.6"
+    id("com.osm.gradle.plugins.rustic") version "0.2.7"
 }
 
 rustic {
