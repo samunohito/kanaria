@@ -14,6 +14,7 @@ tasks {
 
     create("test") {
         group = "summary"
+        dependsOn(getByName("release"))
 
         val exclude = listOf("kanaria_dotnet", "kanaria_extern", "kanaria_jvm")
         bindChildProjectsTasks(this, "rustTestRelease", childProjects.values.filter { pj -> !exclude.any { pj.name.contains(it) } })
