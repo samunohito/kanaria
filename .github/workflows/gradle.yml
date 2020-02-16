@@ -19,6 +19,12 @@ jobs:
       run: chmod +x ./setup/install_compiler_x86_64.sh
     - name: Set up BuildTools
       run: sudo ./setup/install_compiler_x86_64.sh
+    - name: Set up AndroidNDK
+      uses: ravinderjangra/android-ndk-toolchain-setup@0.1
+      with:
+        api: 26
+        arch: x86_64
+        install-location: /usr/local/lib
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: ReleaseBuild with Gradle
