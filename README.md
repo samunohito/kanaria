@@ -3,7 +3,7 @@ Kanaria
 
 このライブラリは、ひらがな・カタカナ、半角・全角の相互変換や判別を始めとした機能を提供します。
 
-[ ![Download](https://api.bintray.com/packages/sam-osamu/maven/com.kanaria.kanaria_jvm/images/download.svg) ](https://bintray.com/sam-osamu/maven/com.kanaria.kanaria_jvm/_latestVersion)
+![Gradle CI](https://github.com/sam-osamu/kanaria/workflows/Gradle%20CI/badge.svg?branch=develop)
 
 ## Description
 
