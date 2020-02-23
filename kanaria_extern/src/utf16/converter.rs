@@ -1,7 +1,6 @@
 use kanaria::constants::*;
-use kanaria::str::ConvertType;
-use kanaria::str::ConvertType::{Hiragana, Katakana, LowerCase, Narrow, UpperCase, Wide};
-use kanaria::UCSStr;
+use kanaria::string::{ConvertType, UCSStr};
+use kanaria::string::ConvertType::{Hiragana, Katakana, LowerCase, Narrow, UpperCase, Wide};
 use kanaria::utils::ConvertTarget;
 
 fn int_to_convert_type(convert_type: u32) -> ConvertType {
@@ -26,7 +25,7 @@ pub unsafe extern "C" fn convert_for_utf16(
     convert_target: u32,
 ) -> u32 {
     dst_chars_ptr.write_bytes(0, dst_chars_ptr_size as usize);
-    return UCSStr::convert(
+    return UCSStr::convert_raw(
         src_chars_ptr,
         dst_chars_ptr,
         src_chars_ptr_size as usize,

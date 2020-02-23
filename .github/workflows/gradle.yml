@@ -25,7 +25,5 @@ jobs:
       run: ./setup/install_android_compiler_x86_64.sh
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
-    - name: ReleaseBuild with Gradle
-      run: ./gradlew release --info
     - name: Test with Gradle
       run: ./gradlew test --info

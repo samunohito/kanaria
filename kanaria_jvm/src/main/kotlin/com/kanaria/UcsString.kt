@@ -34,6 +34,20 @@ class UcsString private constructor(arg: String?) {
         return this
     }
 
+    fun isContains(search: String): Boolean {
+        KanariaLoader.checkOrThrow()
+
+        val tmpBuffer = if (requests.isEmpty()) target else this.toString()
+        return isContainsNative(tmpBuffer.toCharArray(), tmpBuffer.length, search.toCharArray(), search.length)
+    }
+
+    fun indexOf(search: String): Int {
+        KanariaLoader.checkOrThrow()
+
+        val tmpBuffer = if (requests.isEmpty()) target else this.toString()
+        return indexOfNative(tmpBuffer.toCharArray(), tmpBuffer.length, search.toCharArray(), search.length)
+    }
+
     override fun toString(): String {
         KanariaLoader.checkOrThrow()
 
@@ -71,6 +85,9 @@ class UcsString private constructor(arg: String?) {
 
         return tmpBuffer
     }
+
+    private external fun isContainsNative(src: CharArray, srcLength: Int, search: CharArray, searchLength: Int): Boolean
+    private external fun indexOfNative(src: CharArray, srcLength: Int, search: CharArray, searchLength: Int): Int
 
     private external fun convertNative(src: CharArray, srcLength: Int, dst: CharArray, dstLength: Int, convertType: Int, convertTarget: Int): Int
     private external fun toUpperCaseNative(src: CharArray, srcLength: Int, dst: CharArray, dstLength: Int): Int

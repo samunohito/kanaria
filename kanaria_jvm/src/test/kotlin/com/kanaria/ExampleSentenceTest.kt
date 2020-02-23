@@ -191,4 +191,22 @@ class ExampleSentenceTest {
         Assert.assertEquals(expect, UcsString.from(source).katakana().narrow(UcsString.CONVERT_TARGET_ALL).toString());
         Assert.assertEquals(expect2, UcsString.from(source).katakana().narrow(UcsString.CONVERT_TARGET_NUMBER or UcsString.CONVERT_TARGET_SYMBOL or UcsString.CONVERT_TARGET_ALPHABET).toString());
     }
+
+    @Test
+    fun exampleSentence10() {
+        val source = "吾輩は😺猫である😺";
+
+        KanariaLoader.load()
+        Assert.assertTrue(UcsString.from(source).isContains("😺猫"))
+        Assert.assertFalse(UcsString.from(source).isContains("😺犬"))
+    }
+
+    @Test
+    fun exampleSentence11() {
+        val source = "吾輩は😺猫である😺";
+
+        KanariaLoader.load()
+        Assert.assertEquals(UcsString.from(source).indexOf("😺猫"), 4)
+        Assert.assertEquals(UcsString.from(source).indexOf("😺犬"), -1)
+    }
 }
