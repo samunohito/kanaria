@@ -6,7 +6,6 @@ pub use self::width::WidthUtils;
 pub use self::ext::CharExtend;
 
 mod ext;
-mod internal;
 mod chars;
 mod ascii;
 mod kana;
