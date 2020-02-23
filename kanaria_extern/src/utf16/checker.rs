@@ -1,15 +1,4 @@
-use kanaria::utils::{AsciiUtils, KanaUtils, WidthUtils, CharsUtils};
-
-#[no_mangle]
-pub unsafe extern "C" fn is_narrow_for_utf16(target: u16) -> bool {
-    CharsUtils::is_narrow(target)
-}
-
-#[no_mangle]
-pub unsafe extern "C" fn is_wide_for_utf16(target: u16) -> bool {
-    CharsUtils::is_wide(target)
-}
-
+use kanaria::utils::{AsciiUtils, KanaUtils, WidthUtils};
 
 #[no_mangle]
 pub unsafe extern "C" fn is_ascii_for_utf16(target: u16) -> bool {
