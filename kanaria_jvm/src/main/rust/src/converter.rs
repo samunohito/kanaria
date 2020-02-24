@@ -5,9 +5,9 @@ use jni::JNIEnv;
 use jni::sys::*;
 
 use kanaria::constants::*;
-use kanaria::str::ConvertType;
-use kanaria::str::ConvertType::{Hiragana, Katakana, LowerCase, Narrow, UpperCase, Wide};
-use kanaria::UCSStr;
+use kanaria::string::ConvertType;
+use kanaria::string::ConvertType::{Hiragana, Katakana, LowerCase, Narrow, UpperCase, Wide};
+use kanaria::string::UCSStr;
 use kanaria::utils::ConvertTarget;
 
 fn int_to_convert_type(convert_type: u32) -> ConvertType {
@@ -44,7 +44,7 @@ pub unsafe extern fn Java_com_kanaria_UcsString_convertNative(
     dst_buffer.set_len(dst_chars_len as usize);
 
     // 変換処理
-    let size = UCSStr::convert(
+    let size = UCSStr::convert_raw(
         src_buffer.as_ptr(),
         dst_buffer.as_mut_ptr(),
         src_chars_len as usize,

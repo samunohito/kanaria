@@ -31,22 +31,20 @@ Stringとして吐き出しているサンプルです。
 let source = "吾輩は😺猫である😺";
 let expect = "吾輩ﾊ😺猫ﾃﾞｱﾙ😺";
 
-assert_eq!(expect.to_string(), UCSStr::from_str(source).katakana().narrow().to_string());
+assert_eq!(expect, UCSStr::from_str(source).katakana().narrow().to_string());
 ```
 
 また、上記のようにメソッドチェーンによる連続した変換設定はできませんが、<br>
 次のような形でも変換できます。<br>
 ```rust
-use kanaria::converter::{Converter, ConverterFactory};
+use kanaria::string::UCSStr;
+use kanaria::string::ConvertType::Katakana;
+use kanaria::utils::ConvertTarget;
+use kanaria::string::ConvertType;
+
 let target = vec!['あ', 'い', 'う', 'え', 'お'];
-let mut result = Vec::<char>::with_capacity(target.len());
-unsafe {
-    // ほかにも、UCSStrと同じようにVec<T>やStringに出力する機能もあります
-    let len = ConverterFactory::from_slice(target.as_slice())
-        .katakana()
-        .write_to_ptr(result.as_mut_ptr());
-    result.set_len(len);
-};
+let result = UCSStr::convert(target.as_slice(), ConvertType::Katakana, ConvertTarget::ALL);
+
 assert_eq!(result, vec!['ア', 'イ', 'ウ', 'エ', 'オ']);
 ```
 この例は、半角文字を全角文字に変換しています。<br>
@@ -68,13 +66,13 @@ Assert.AreEqual(hiragana, UcsString.From(katakana).Hiragana().ToString());
 Rust（ https://crates.io/crates/kanaria ）
 ```toml:Cargo.toml
 [dependencies]
-kanaria = "0.1.1"
+kanaria = "0.2.0"
 ```
 <br>
 
 C#（ https://www.nuget.org/packages/Kanaria.Net/ ）
 ```bat
-PM> Install-Package Kanaria.Net -Version 0.1.2
+PM> Install-Package Kanaria.Net -Version 0.2.0
 ```
 <br>
 
@@ -83,7 +81,7 @@ Maven（ https://bintray.com/sam-osamu/maven/com.kanaria.kanaria_jvm ）
 <dependency>
   <groupId>com.kanaria</groupId>
   <artifactId>kanaria_jvm</artifactId>
-  <version>0.1.0</version>
+  <version>0.2.0</version>
   <type>pom</type>
 </dependency>
 ```
@@ -91,12 +89,12 @@ Maven（ https://bintray.com/sam-osamu/maven/com.kanaria.kanaria_jvm ）
 
 Gradle（ https://bintray.com/sam-osamu/maven/com.kanaria.kanaria_jvm ）
 ```gradle:build.gradle
-compile 'com.kanaria:kanaria_jvm:0.1.0'
+compile 'com.kanaria:kanaria_jvm:0.2.0'
 ```
 
 ## API
 次のページをご参照ください（これはRust向けのものです）。<br>
-https://docs.rs/kanaria/0.1.1/kanaria/ <br>
+https://docs.rs/kanaria/0.2.0/kanaria/ <br>
 <br>
 RustDocのようにサンプルを交えての記載まではできていませんが、<br>
 各言語のラッパー関数にも同様の関数コメントをご用意しています。<br>

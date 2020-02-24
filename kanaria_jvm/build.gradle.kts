@@ -11,7 +11,7 @@ plugins {
 
 val GITHUB_URL = "https://github.com/sam-osamu/kanaria"
 group = "com.kanaria"
-version = "0.1.0"
+version = "0.2.0"
 
 dependencies {
     "implementation"(group = "jaxen", name = "jaxen", version = "1.1.6")

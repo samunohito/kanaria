@@ -1,7 +1,7 @@
 extern crate kanaria;
 
-use kanaria::UCSStr;
-use kanaria::utils::ConvertTarget;
+use kanaria::string::{UCSStr};
+use kanaria::utils::{ConvertTarget};
 
 #[test]
 fn example_sentence_1() {
