@@ -1,6 +1,7 @@
 extern crate kanaria;
 
-use kanaria::UCSStr;
+use kanaria::string::{UCSStr};
+use kanaria::utils::{ConvertTarget};
 
 #[test]
 fn example_sentence_1() {
@@ -25,8 +26,8 @@ fn example_sentence_3() {
     let hankaku = "ﾁﾀﾀﾌﾟ ﾄﾃﾄﾃFoooo!!!11!";
     let zenkaku = "チタタプ　トテトテＦｏｏｏｏ！！！１１！";
 
-    assert_eq!(UCSStr::from_str(zenkaku).narrow().to_string(), hankaku.to_string());
-    assert_eq!(UCSStr::from_str(hankaku).wide().to_string(), zenkaku.to_string());
+    assert_eq!(UCSStr::from_str(zenkaku).narrow(ConvertTarget::ALL).to_string(), hankaku.to_string());
+    assert_eq!(UCSStr::from_str(hankaku).wide(ConvertTarget::ALL).to_string(), zenkaku.to_string());
 }
 
 #[test]
@@ -34,14 +35,16 @@ fn example_sentence_4() {
     let hankaku = "吾輩ﾊ😺猫ﾃﾞｱﾙ😺";
     let zenkaku = "吾輩ハ😺猫デアル😺";
 
-    assert_eq!(UCSStr::from_str(zenkaku).narrow().to_string(), hankaku.to_string());
-    assert_eq!(UCSStr::from_str(hankaku).wide().to_string(), zenkaku.to_string());
+    assert_eq!(UCSStr::from_str(zenkaku).narrow(ConvertTarget::ALL).to_string(), hankaku.to_string());
+    assert_eq!(UCSStr::from_str(hankaku).wide(ConvertTarget::ALL).to_string(), zenkaku.to_string());
 }
 
 #[test]
 fn example_sentence_5() {
     let source = "吾輩は😺猫である😺";
     let expect = "吾輩ﾊ😺猫ﾃﾞｱﾙ😺";
+    let expect2 = "吾輩ハ😺猫デアル😺";
 
-    assert_eq!(expect.to_string(), UCSStr::from_str(source).katakana().narrow().to_string());
+    assert_eq!(expect.to_string(), UCSStr::from_str(source).katakana().narrow(ConvertTarget::ALL).to_string());
+    assert_eq!(expect2.to_string(), UCSStr::from_str(source).katakana().narrow(ConvertTarget::NUMBER | ConvertTarget::SYMBOL | ConvertTarget::ALPHABET).to_string());
 }

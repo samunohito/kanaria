@@ -1,6 +1,6 @@
 [package]
 name = "kanaria"
-version = "0.1.1"
+version = "0.2.0"
 authors = ["osamu <46447427+sam-osamu@users.noreply.github.com>"]
 
 repository = "https://github.com/sam-osamu/com.kanaria"
@@ -15,7 +15,7 @@ exclude = [
 ]
 
 [dependencies]
-
+bitflags = "1.2.1"
 
 [lib]
 name = "kanaria"

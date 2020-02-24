@@ -1,6 +1,0 @@
-//apply plugin: 'org.ysb33r.rust.lib'
-//
-//rust {
-//    useCargoSourceLayout(projectDir)
-//    cargoToml "${projectDir}/Cargo.toml"
-//}

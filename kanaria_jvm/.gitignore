@@ -88,3 +88,5 @@ fabric.properties
 
 
 /src/main/resources/com/kanaria/platforms/
+*.so
+*.dll
