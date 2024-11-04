@@ -39,6 +39,7 @@ gradle/wrapper/gradle-wrapper.properties
 .idea/**/usage.statistics.xml
 .idea/**/dictionaries
 .idea/**/shelf
+.idea/**/git_toolbox_*.xml
 
 # Generated files
 .idea/**/contentModel.xml
