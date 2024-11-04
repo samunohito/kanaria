@@ -1,7 +1,7 @@
 [package]
 name = "kanaria_jni"
 version = "0.1.0"
-authors = ["osamu <46447427+sam-osamu@users.noreply.github.com>"]
+authors = ["samunohito <46447427+samunohito@users.noreply.github.com>"]
 edition = "2021"
 
 [dependencies]

@@ -9,7 +9,7 @@ plugins {
     id("com.osm.gradle.plugins.rustic") version "0.2.7"
 }
 
-val GITHUB_URL = "https://github.com/sam-osamu/kanaria"
+val GITHUB_URL = "https://github.com/samunohito/kanaria"
 group = "com.kanaria"
 version = "0.2.0"
 
