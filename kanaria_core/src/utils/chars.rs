@@ -1,5 +1,5 @@
-use UCSChar;
-use utils::{AsciiUtils, KanaUtils};
+use crate::UCSChar;
+use crate::utils::{AsciiUtils, KanaUtils};
 
 pub struct CharsUtils;
 

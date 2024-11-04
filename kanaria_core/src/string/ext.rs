@@ -1,5 +1,5 @@
-use UCSChar;
-use string::string::UCSStr;
+use crate::UCSChar;
+use crate::string::string::UCSStr;
 
 impl<T> Clone for UCSStr<T> where T: UCSChar {
     fn clone(&self) -> Self {

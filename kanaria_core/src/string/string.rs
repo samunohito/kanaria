@@ -1,12 +1,13 @@
 use std::char;
 use std::slice::from_raw_parts;
 
-use string::params::{ConvertParameter, ConvertType};
-use string::params::ConvertType::*;
-use utils::{AsciiUtils, KanaUtils, WidthUtils, CharExtend};
+use crate::string::params::{ConvertParameter, ConvertType};
+use crate::string::params::ConvertType::*;
+use crate::utils::{AsciiUtils, KanaUtils, WidthUtils, CharExtend};
 
 use crate::UCSChar;
 use crate::utils::ConvertTarget;
+use crate::string::ConvertType::{UpperCase, LowerCase, Hiragana, Katakana, Wide, Narrow};
 
 pub struct UCSStr<T> where T: UCSChar {
     /// 変換対象文字列を保持します。

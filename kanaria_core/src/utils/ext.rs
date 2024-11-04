@@ -1,4 +1,4 @@
-use UCSChar;
+use crate::UCSChar;
 
 pub trait CharExtend {
     fn to_char_vec(&self) -> Vec<char>;

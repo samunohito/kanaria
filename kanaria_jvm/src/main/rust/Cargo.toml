@@ -2,7 +2,7 @@
 name = "kanaria_jni"
 version = "0.1.0"
 authors = ["osamu <46447427+sam-osamu@users.noreply.github.com>"]
-edition = "2018"
+edition = "2021"
 
 [dependencies]
 kanaria = { path = "../../../../kanaria_core" }
