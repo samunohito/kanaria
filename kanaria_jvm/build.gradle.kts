@@ -2,103 +2,88 @@ import java.nio.file.Files
 import java.nio.file.Paths
 
 plugins {
-    maven
+    `maven-publish`
     `kotlin-dsl`
-    id("org.jetbrains.dokka") version "0.10.0"
-    id("com.jfrog.bintray") version "1.8.4"
+    id("org.jetbrains.dokka") version "1.9.20"
     id("com.osm.gradle.plugins.rustic") version "0.2.7"
 }
 
 val GITHUB_URL = "https://github.com/samunohito/kanaria"
 group = "com.kanaria"
-version = "0.2.0"
+version = "0.2.1"
 
 dependencies {
-    "implementation"(group = "jaxen", name = "jaxen", version = "1.1.6")
-    "implementation"(group = "org.dom4j", name = "dom4j", version = "2.1.1")
-    "implementation"(group = "org.jetbrains.kotlin", name = "kotlin-stdlib-jdk8")
-    "testImplementation"(group = "junit", name = "junit", version = "4.12")
-    "testImplementation"(group = "org.jetbrains.kotlin", name = "kotlin-test-junit", version = "1.3.21")
+    "implementation"(group = "jaxen", name = "jaxen", version = "2.0.0")
+    "implementation"(group = "org.dom4j", name = "dom4j", version = "2.1.4")
+    "testImplementation"(group = "junit", name = "junit", version = "4.13.2")
+    "testImplementation"(group = "org.jetbrains.kotlin", name = "kotlin-test-junit", version = "2.0.21")
+}
+
+tasks.dokkaHtml {
+    outputDirectory.set(layout.buildDirectory.dir("javadoc"))
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+    sourceSets {
+        main {
+            java.srcDirs("src/main/kotlin")
+        }
+        test {
+            java.srcDirs("src/test/kotlin")
+        }
+    }
 }
 
 tasks {
-    val dokka by getting(org.jetbrains.dokka.gradle.DokkaTask::class) {
-        outputFormat = "html"
-        outputDirectory = "$buildDir/javadoc"
+    named<Javadoc>("javadoc") {
+        options.locale = "ja_JP"
+        isFailOnError = false
+        source = sourceSets["main"].allJava
+    }
+
+    register<Jar>("sourcesJar") {
+        dependsOn(JavaPlugin.CLASSES_TASK_NAME)
+        archiveClassifier.set("sources")
+        from(sourceSets["main"].allSource)
+    }
+
+    register<Jar>("javadocJar") {
+        dependsOn(JavaPlugin.JAVADOC_TASK_NAME)
+        archiveClassifier.set("javadoc")
+        from(named<Javadoc>("javadoc").get().destinationDir)
     }
 }
 
-configure<JavaPluginConvention> {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
-
-    sourceSets {
-        getByName("main").java.srcDirs("src/main/kotlin")
-        getByName("test").java.srcDirs("src/test/kotlin")
-    }
-
-    tasks {
-        getByName("javadoc", Javadoc::class) {
-            options.locale = "ja_JP"
-            isFailOnError = false
-            source = sourceSets["main"].allJava
-        }
-
-        val sourcesJar by creating(Jar::class) {
-            dependsOn(JavaPlugin.CLASSES_TASK_NAME)
-            archiveClassifier.set("sources")
-            from(sourceSets["main"].allSource)
-        }
-
-        val javadocJar by creating(Jar::class) {
-            dependsOn(JavaPlugin.JAVADOC_TASK_NAME)
-            archiveClassifier.set("javadoc")
-            from(getByName("javadoc", Javadoc::class).destinationDir)
-        }
-
-        artifacts {
-            add("archives", sourcesJar)
-            add("archives", javadocJar)
-        }
-    }
+artifacts {
+    add("archives", tasks["sourcesJar"])
+    add("archives", tasks["javadocJar"])
 }
 
-bintray {
-    user = if (project.hasProperty("bintray_user")) project.properties["bintray_user"].toString() else ""
-    key = if (project.hasProperty("bintray_apikey")) project.properties["bintray_apikey"].toString() else ""
-    pkg.apply {
-        repo = "maven"
-        name = "${project.group}.${project.name}"
-        websiteUrl = GITHUB_URL
-        issueTrackerUrl = "${GITHUB_URL}/issues"
-        vcsUrl = "${GITHUB_URL}.git"
-        publicDownloadNumbers = true
-        setVersion(project.version)
-    }
-    setConfigurations("archives")
-}
-
-tasks.getByName("install", Upload::class) {
-    repositories.withGroovyBuilder {
-        "mavenInstaller" {
-            "pom" {
-                "project" {
-                    setProperty("groupId", project.group)
-                    setProperty("artifactId", project.name)
-                    setProperty("version", project.version)
-
-                    "licenses" {
-                        "license" {
-                            setProperty("name", "The MIT License")
-                            setProperty("url", "https://opensource.org/licenses/MIT")
-                            setProperty("distribution", "repo")
-                        }
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            pom {
+                name.set("${project.name}")
+                description.set("This library provides functions such as hiragana, katakana, half-width and full-width mutual conversion and discrimination.")
+                url.set(GITHUB_URL)
+                licenses {
+                    license {
+                        name.set("MIT License")
+                        url.set("https://opensource.org/licenses/MIT")
+                        distribution.set("repo")
                     }
-
-                    "scm" {
-                        setProperty("connection", "${GITHUB_URL}.git")
-                        setProperty("url", GITHUB_URL)
+                }
+                developers {
+                    developer {
+                        id.set("samunohito")
+                        name.set("samunohito")
+                        email.set("46447427+samunohito@users.noreply.github.com")
                     }
+                }
+                scm {
+                    url.set("${GITHUB_URL}.git")
                 }
             }
         }
