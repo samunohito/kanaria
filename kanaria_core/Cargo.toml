@@ -2,7 +2,7 @@
 name = "kanaria"
 version = "0.2.1"
 authors = ["samunohito <46447427+samunohito@users.noreply.github.com>"]
-edition = "2021"
+edition = "2024"
 
 repository = "https://github.com/samunohito/kanaria"
 readme = "../README.md"

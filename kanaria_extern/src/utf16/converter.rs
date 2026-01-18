@@ -16,7 +16,7 @@ fn int_to_convert_type(convert_type: u32) -> ConvertType {
     }
 }
 
-#[no_mangle]
+#[unsafe(no_mangle)]
 pub unsafe extern "C" fn convert_for_utf16(
     src_chars_ptr: *const u16,
     src_chars_ptr_size: u32,
@@ -24,7 +24,7 @@ pub unsafe extern "C" fn convert_for_utf16(
     dst_chars_ptr_size: u32,
     convert_type: u32,
     convert_target: u32,
-) -> u32 {
+) -> u32 { unsafe {
     dst_chars_ptr.write_bytes(0, dst_chars_ptr_size as usize);
     return UCSStr::convert_raw(
         src_chars_ptr,
@@ -33,15 +33,15 @@ pub unsafe extern "C" fn convert_for_utf16(
         int_to_convert_type(convert_type),
         ConvertTarget::from_bits(convert_target).unwrap_or(ConvertTarget::ALL),
     ) as u32;
-}
+}}
 
-#[no_mangle]
+#[unsafe(no_mangle)]
 pub unsafe extern "C" fn to_upper_case_for_utf16(
     src_chars_ptr: *const u16,
     src_chars_ptr_size: u32,
     dst_chars_ptr: *mut u16,
     dst_chars_ptr_size: u32,
-) -> u32 {
+) -> u32 { unsafe {
     convert_for_utf16(
         src_chars_ptr,
         src_chars_ptr_size,
@@ -50,15 +50,15 @@ pub unsafe extern "C" fn to_upper_case_for_utf16(
         CONVERT_TYPE_UPPER_CASE,
         CONVERT_TARGET_ALL,
     )
-}
+}}
 
-#[no_mangle]
+#[unsafe(no_mangle)]
 pub unsafe extern "C" fn to_lower_case_for_utf16(
     src_chars_ptr: *const u16,
     src_chars_ptr_size: u32,
     dst_chars_ptr: *mut u16,
     dst_chars_ptr_size: u32,
-) -> u32 {
+) -> u32 { unsafe {
     convert_for_utf16(
         src_chars_ptr,
         src_chars_ptr_size,
@@ -67,15 +67,15 @@ pub unsafe extern "C" fn to_lower_case_for_utf16(
         CONVERT_TYPE_LOWER_CASE,
         CONVERT_TARGET_ALL,
     )
-}
+}}
 
-#[no_mangle]
+#[unsafe(no_mangle)]
 pub unsafe extern "C" fn to_hiragana_for_utf16(
     src_chars_ptr: *const u16,
     src_chars_ptr_size: u32,
     dst_chars_ptr: *mut u16,
     dst_chars_ptr_size: u32,
-) -> u32 {
+) -> u32 { unsafe {
     convert_for_utf16(
         src_chars_ptr,
         src_chars_ptr_size,
@@ -84,15 +84,15 @@ pub unsafe extern "C" fn to_hiragana_for_utf16(
         CONVERT_TYPE_HIRAGANA,
         CONVERT_TARGET_ALL,
     )
-}
+}}
 
-#[no_mangle]
+#[unsafe(no_mangle)]
 pub unsafe extern "C" fn to_katakana_for_utf16(
     src_chars_ptr: *const u16,
     src_chars_ptr_size: u32,
     dst_chars_ptr: *mut u16,
     dst_chars_ptr_size: u32,
-) -> u32 {
+) -> u32 { unsafe {
     convert_for_utf16(
         src_chars_ptr,
         src_chars_ptr_size,
@@ -101,16 +101,16 @@ pub unsafe extern "C" fn to_katakana_for_utf16(
         CONVERT_TYPE_KATAKANA,
         CONVERT_TARGET_ALL,
     )
-}
+}}
 
-#[no_mangle]
+#[unsafe(no_mangle)]
 pub unsafe extern "C" fn to_wide_for_utf16(
     src_chars_ptr: *const u16,
     src_chars_ptr_size: u32,
     dst_chars_ptr: *mut u16,
     dst_chars_ptr_size: u32,
     convert_target: u32,
-) -> u32 {
+) -> u32 { unsafe {
     convert_for_utf16(
         src_chars_ptr,
         src_chars_ptr_size,
@@ -119,16 +119,16 @@ pub unsafe extern "C" fn to_wide_for_utf16(
         CONVERT_TYPE_WIDE,
         convert_target,
     )
-}
+}}
 
-#[no_mangle]
+#[unsafe(no_mangle)]
 pub unsafe extern "C" fn to_narrow_for_utf16(
     src_chars_ptr: *const u16,
     src_chars_ptr_size: u32,
     dst_chars_ptr: *mut u16,
     dst_chars_ptr_size: u32,
     convert_target: u32,
-) -> u32 {
+) -> u32 { unsafe {
     convert_for_utf16(
         src_chars_ptr,
         src_chars_ptr_size,
@@ -137,4 +137,4 @@ pub unsafe extern "C" fn to_narrow_for_utf16(
         CONVERT_TYPE_NARROW,
         convert_target
     )
-}
+}}
