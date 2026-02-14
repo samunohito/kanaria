@@ -80,9 +80,9 @@ impl<'a, T> UCSStr<T> where T: UCSChar {
     /// let target = vec!['あ', 'い', 'う', 'え', 'お'];
     /// let result = unsafe { UCSStr::from_raw(target.as_ptr(), target.len()) };
     /// ```
-    pub unsafe fn from_raw(source: *const T, len: usize) -> Self where T: UCSChar {
+    pub unsafe fn from_raw(source: *const T, len: usize) -> Self where T: UCSChar { unsafe {
         Self::from_slice(from_raw_parts(source, len))
-    }
+    }}
 
     /// 文字列を大文字に変換するように設定します。
     ///
@@ -382,7 +382,7 @@ impl<'a, T> UCSStr<T> where T: UCSChar {
     ///
     /// assert_eq!(result, vec!['ア', 'イ', 'ウ', 'エ', 'オ'])
     /// ```
-    pub unsafe fn convert_raw(src_ptr: *const T, dst_ptr: *mut T, src_len: usize, convert_type: ConvertType, convert_target: ConvertTarget) -> usize where T: UCSChar {
+    pub unsafe fn convert_raw(src_ptr: *const T, dst_ptr: *mut T, src_len: usize, convert_type: ConvertType, convert_target: ConvertTarget) -> usize where T: UCSChar { unsafe {
         if convert_type == ConvertType::Narrow {
             Self::convert_internal_to_narrow(src_ptr, dst_ptr, src_len, convert_target)
         } else if convert_type == ConvertType::Wide {
@@ -398,10 +398,10 @@ impl<'a, T> UCSStr<T> where T: UCSChar {
                 }),
             }
         }
-    }
+    }}
 
     /// コンバータを使用して文字列を変換します。
-    unsafe fn convert_internal(src_ptr: *const T, dst_ptr: *mut T, len: usize, converter: fn(T) -> T) -> usize {
+    unsafe fn convert_internal(src_ptr: *const T, dst_ptr: *mut T, len: usize, converter: fn(T) -> T) -> usize { unsafe {
         let mut dst_ptr_offset: isize = 0;
 
         let accessor = from_raw_parts(src_ptr, len);
@@ -413,10 +413,10 @@ impl<'a, T> UCSStr<T> where T: UCSChar {
             });
 
         return dst_ptr_offset as usize;
-    }
+    }}
 
     /// 半角文字列を全角に変換します。
-    unsafe fn convert_internal_to_wide(src_ptr: *const T, dst_ptr: *mut T, len: usize, convert_target: ConvertTarget) -> usize {
+    unsafe fn convert_internal_to_wide(src_ptr: *const T, dst_ptr: *mut T, len: usize, convert_target: ConvertTarget) -> usize { unsafe {
         let mut dst_ptr_offset: isize = 0;
 
         let accessor = from_raw_parts(src_ptr, len);
@@ -446,10 +446,10 @@ impl<'a, T> UCSStr<T> where T: UCSChar {
         }
 
         return dst_ptr_offset as usize;
-    }
+    }}
 
     /// 全角文字列を全角に変換します。
-    unsafe fn convert_internal_to_narrow(src_ptr: *const T, dst_ptr: *mut T, len: usize, convert_target: ConvertTarget) -> usize where T: UCSChar {
+    unsafe fn convert_internal_to_narrow(src_ptr: *const T, dst_ptr: *mut T, len: usize, convert_target: ConvertTarget) -> usize where T: UCSChar { unsafe {
         let mut dst_ptr_offset: isize = 0;
 
         let accessor = from_raw_parts(src_ptr, len);
@@ -473,7 +473,7 @@ impl<'a, T> UCSStr<T> where T: UCSChar {
         });
 
         return dst_ptr_offset as usize;
-    }
+    }}
 
     /// サロゲートペアとして分割されていた文字を結合します。
     fn concat_surrogate(cur_char_ptr: &T, next_char_ptr: &T) -> u32 where T: UCSChar {

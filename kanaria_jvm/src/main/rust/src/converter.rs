@@ -22,7 +22,7 @@ fn int_to_convert_type(convert_type: u32) -> ConvertType {
     }
 }
 
-#[no_mangle]
+#[unsafe(no_mangle)]
 #[allow(unused_variables, non_snake_case)]
 pub unsafe extern fn Java_com_kanaria_UcsString_convertNative(
     env: JNIEnv,
@@ -33,7 +33,7 @@ pub unsafe extern fn Java_com_kanaria_UcsString_convertNative(
     dst_chars_len: jint,
     convert_type: jint,
     convert_target: jint,
-) -> jint {
+) -> jint { unsafe {
     // 処理対象文字列の取得
     let mut src_buffer = Vec::<jchar>::with_capacity(src_chars_len as usize);
     src_buffer.set_len(src_chars_len as usize);
@@ -57,9 +57,9 @@ pub unsafe extern fn Java_com_kanaria_UcsString_convertNative(
     let _ = env.set_char_array_region(dst_chars, 0, dst_buffer.as_slice());
 
     return dst_buffer.len() as jint;
-}
+}}
 
-#[no_mangle]
+#[unsafe(no_mangle)]
 #[allow(unused_variables, non_snake_case)]
 pub unsafe extern fn Java_com_kanaria_UcsString_toUpperCaseNative(
     env: JNIEnv,
@@ -68,7 +68,7 @@ pub unsafe extern fn Java_com_kanaria_UcsString_toUpperCaseNative(
     src_chars_len: jint,
     dst_chars: jcharArray,
     dst_chars_len: jint,
-) -> jint {
+) -> jint { unsafe {
     Java_com_kanaria_UcsString_convertNative(
         env,
         class,
@@ -79,9 +79,9 @@ pub unsafe extern fn Java_com_kanaria_UcsString_toUpperCaseNative(
         CONVERT_TYPE_UPPER_CASE as jint,
         CONVERT_TARGET_ALL as jint,
     )
-}
+}}
 
-#[no_mangle]
+#[unsafe(no_mangle)]
 #[allow(unused_variables, non_snake_case)]
 pub unsafe extern fn Java_com_kanaria_UcsString_toLowerCaseNative(
     env: JNIEnv,
@@ -90,7 +90,7 @@ pub unsafe extern fn Java_com_kanaria_UcsString_toLowerCaseNative(
     src_chars_len: jint,
     dst_chars: jcharArray,
     dst_chars_len: jint,
-) -> jint {
+) -> jint { unsafe {
     Java_com_kanaria_UcsString_convertNative(
         env,
         class,
@@ -101,9 +101,9 @@ pub unsafe extern fn Java_com_kanaria_UcsString_toLowerCaseNative(
         CONVERT_TYPE_LOWER_CASE as jint,
         CONVERT_TARGET_ALL as jint,
     )
-}
+}}
 
-#[no_mangle]
+#[unsafe(no_mangle)]
 #[allow(unused_variables, non_snake_case)]
 pub unsafe extern fn Java_com_kanaria_UcsString_toHiraganaNative(
     env: JNIEnv,
@@ -112,7 +112,7 @@ pub unsafe extern fn Java_com_kanaria_UcsString_toHiraganaNative(
     src_chars_len: jint,
     dst_chars: jcharArray,
     dst_chars_len: jint,
-) -> jint {
+) -> jint { unsafe {
     Java_com_kanaria_UcsString_convertNative(
         env,
         class,
@@ -123,9 +123,9 @@ pub unsafe extern fn Java_com_kanaria_UcsString_toHiraganaNative(
         CONVERT_TYPE_HIRAGANA as jint,
         CONVERT_TARGET_ALL as jint,
     )
-}
+}}
 
-#[no_mangle]
+#[unsafe(no_mangle)]
 #[allow(unused_variables, non_snake_case)]
 pub unsafe extern fn Java_com_kanaria_UcsString_toKatakanaNative(
     env: JNIEnv,
@@ -134,7 +134,7 @@ pub unsafe extern fn Java_com_kanaria_UcsString_toKatakanaNative(
     src_chars_len: jint,
     dst_chars: jcharArray,
     dst_chars_len: jint,
-) -> jint {
+) -> jint { unsafe {
     Java_com_kanaria_UcsString_convertNative(
         env,
         class,
@@ -145,9 +145,9 @@ pub unsafe extern fn Java_com_kanaria_UcsString_toKatakanaNative(
         CONVERT_TYPE_KATAKANA as jint,
         CONVERT_TARGET_ALL as jint,
     )
-}
+}}
 
-#[no_mangle]
+#[unsafe(no_mangle)]
 #[allow(unused_variables, non_snake_case)]
 pub unsafe extern fn Java_com_kanaria_UcsString_toWideNative(
     env: JNIEnv,
@@ -157,7 +157,7 @@ pub unsafe extern fn Java_com_kanaria_UcsString_toWideNative(
     dst_chars: jcharArray,
     dst_chars_len: jint,
     convert_target: jint,
-) -> jint {
+) -> jint { unsafe {
     Java_com_kanaria_UcsString_convertNative(
         env,
         class,
@@ -168,9 +168,9 @@ pub unsafe extern fn Java_com_kanaria_UcsString_toWideNative(
         CONVERT_TYPE_WIDE as jint,
         convert_target,
     )
-}
+}}
 
-#[no_mangle]
+#[unsafe(no_mangle)]
 #[allow(unused_variables, non_snake_case)]
 pub unsafe extern fn Java_com_kanaria_UcsString_toNarrowNative(
     env: JNIEnv,
@@ -180,7 +180,7 @@ pub unsafe extern fn Java_com_kanaria_UcsString_toNarrowNative(
     dst_chars: jcharArray,
     dst_chars_len: jint,
     convert_target: jint,
-) -> jint {
+) -> jint { unsafe {
     Java_com_kanaria_UcsString_convertNative(
         env,
         class,
@@ -191,4 +191,4 @@ pub unsafe extern fn Java_com_kanaria_UcsString_toNarrowNative(
         CONVERT_TYPE_NARROW as jint,
         convert_target,
     )
-}
+}}
